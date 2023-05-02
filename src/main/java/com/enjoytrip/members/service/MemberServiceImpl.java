@@ -16,8 +16,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member findById(int memberId) throws SQLException {
+        return memberRepository.findById(memberId).get();
+    }
+
+    @Override
     public Member login(Member member) throws SQLException {
-        return memberRepository.findMemberByEmailAndPasswordAndDelYn(member.getEmail(), member.getPassword(),false);
+        return memberRepository.findMemberByEmailAndPasswordAndDelYn(member.getEmail(), member.getPassword(), false);
     }
 
     @Override
@@ -26,8 +31,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void dropMember(Member member) throws SQLException {
-
+    public void dropMember(int memberId) throws SQLException {
+        Member member = findById(memberId);
+        member.dropMember();
     }
 
     @Override

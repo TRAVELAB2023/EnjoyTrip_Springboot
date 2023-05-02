@@ -21,16 +21,23 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-
+    @Test
+    void findById() {
+        try {
+            Member member = memberService.findById(12);
+            Assertions.assertEquals(member.getNickname(), "admin");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Test
     void login() {
         Member member = Member.builder()
-                .memberId(12)
                 .email("admin@admin.com")
                 .password("admin").build();
         try {
             Member testMember = memberService.login(member);
-            Assertions.assertEquals(member.getMemberId(), testMember.getMemberId());
+            Assertions.assertEquals(12, testMember.getMemberId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,6 +63,14 @@ class MemberServiceTest {
 
     @Test
     void dropMember() {
+        int memberId = 12;
+        try {
+            memberService.dropMember(memberId);
+            Assertions.assertEquals(memberService.findById(memberId).isDelYn(),true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test

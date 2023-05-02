@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Table(name = "members")
-
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -42,5 +41,23 @@ public class Member {
         this.marketingAgreement = marketingAgreement;
         this.role = role;
         this.delYn = delYn;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", registerTime=" + registerTime +
+                ", marketingAgreement=" + marketingAgreement +
+                ", role='" + role + '\'' +
+                ", delYn=" + delYn +
+                '}';
+    }
+
+    public void dropMember(){
+        this.delYn=true;
     }
 }
