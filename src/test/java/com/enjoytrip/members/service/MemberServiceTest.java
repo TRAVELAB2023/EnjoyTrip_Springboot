@@ -29,8 +29,8 @@ class MemberServiceTest {
                 .email("admin@admin.com")
                 .password("admin").build();
         try {
-            Member returnMember = memberService.login(member);
-            Assertions.assertEquals(member.getMemberId(),returnMember.getMemberId());
+            Member testMember = memberService.login(member);
+            Assertions.assertEquals(member.getMemberId(), testMember.getMemberId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,6 +38,20 @@ class MemberServiceTest {
 
     @Test
     void join() {
+        Member member = Member.builder()
+                .nickname("test")
+                .password("test")
+                .marketingAgreement(true)
+                .role("user")
+                .email("test@test.com").build();
+        try {
+            memberService.join(member);
+            Member testMember = memberService.login(member);
+            Assertions.assertEquals(member.getNickname(), testMember.getNickname());
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
