@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.MemberDto;
 import com.enjoytrip.model.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,12 +34,10 @@ class MemberServiceTest {
     }
     @Test
     void login() {
-        Member member = Member.builder()
-                .email("admin@admin.com")
-                .password("admin").build();
+        LoginDto loginDto = new LoginDto("admin@admin.com","admin");
         try {
-            Member testMember = memberService.login(member);
-            Assertions.assertEquals(12, testMember.getMemberId());
+            MemberDto memberDto = memberService.login(loginDto);
+            Assertions.assertEquals(12, memberDto.getMemberId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,10 +51,11 @@ class MemberServiceTest {
                 .marketingAgreement(true)
                 .role("user")
                 .email("test@test.com").build();
+        LoginDto loginDto = new LoginDto("test@test.com","test");
         try {
             memberService.join(member);
-            Member testMember = memberService.login(member);
-            Assertions.assertEquals(member.getNickname(), testMember.getNickname());
+            MemberDto memberDto = memberService.login(loginDto);
+            Assertions.assertEquals(member.getNickname(), memberDto.getNickname());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.MemberDto;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member login(Member member) throws SQLException {
-        return memberRepository.findMemberByEmailAndPasswordAndDelYn(member.getEmail(), member.getPassword(), false);
+    public MemberDto login(LoginDto loginDto) throws SQLException {
+        MemberDto memberDto = new MemberDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
+        return memberDto;
     }
 
     @Override
