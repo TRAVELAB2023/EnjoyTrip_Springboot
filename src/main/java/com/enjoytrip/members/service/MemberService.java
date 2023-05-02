@@ -10,7 +10,7 @@ public interface MemberService {
     public Member login(Member member) throws SQLException;
     public void join(Member member) throws SQLException;
     public void dropMember(int memberId) throws SQLException;
-    public void modifyMemberPassword(Member member) throws SQLException;
+    public void modifyMemberPassword(int memberId, String newPassword) throws SQLException;
     public boolean isDuplicatedId(String id) throws SQLException;
     public boolean isDuplicatedEmail(String email) throws SQLException;
 }

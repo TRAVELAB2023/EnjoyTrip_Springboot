@@ -37,8 +37,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void modifyMemberPassword(Member member) throws SQLException {
-
+    public void modifyMemberPassword(int memberId, String newPassword) throws SQLException {
+        Member member = findById(memberId);
+        member.modifyPassword(newPassword);
     }
 
     @Override

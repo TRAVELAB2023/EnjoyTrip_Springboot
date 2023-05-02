@@ -75,6 +75,13 @@ class MemberServiceTest {
 
     @Test
     void modifyMemberPassword() {
+        int memberId = 12;
+        try {
+            memberService.modifyMemberPassword(memberId,"test");
+            Assertions.assertEquals(memberService.findById(memberId).getPassword(),"test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "members")
 public class Member {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private int memberId;
     private String email;
@@ -57,7 +58,12 @@ public class Member {
                 '}';
     }
 
-    public void dropMember(){
-        this.delYn=true;
+    public void dropMember() {
+        this.delYn = true;
     }
+
+    public void modifyPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
 }
