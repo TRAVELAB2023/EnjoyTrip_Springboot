@@ -84,11 +84,25 @@ class MemberServiceTest {
         }
     }
 
-    @Test
-    void isDuplicatedId() {
-    }
+
 
     @Test
     void isDuplicatedEmail() {
+    }
+
+    @Test
+    void isDuplicatedNickname() {
+        Member member = Member.builder()
+                .nickname("test")
+                .password("test")
+                .marketingAgreement(true)
+                .role("user")
+                .email("test@test.com").build();
+        try {
+            memberService.join(member);
+            Assertions.assertTrue(memberService.isDuplicatedNickname(member.getNickname()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

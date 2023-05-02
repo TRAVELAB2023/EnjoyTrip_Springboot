@@ -43,9 +43,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean isDuplicatedId(String id) throws SQLException {
+    public boolean isDuplicatedNickname(String nickname) throws SQLException {
+        if( memberRepository.countMembersByNickname(nickname)==1){
+            return true;
+        }
+
         return false;
     }
+
 
     @Override
     public boolean isDuplicatedEmail(String email) throws SQLException {
