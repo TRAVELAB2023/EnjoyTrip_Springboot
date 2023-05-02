@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.MemberDto;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member login(Member member) throws SQLException {
-        return memberRepository.findMemberByEmailAndPasswordAndDelYn(member.getEmail(), member.getPassword(),false);
+    public Member findById(int memberId) throws SQLException {
+        return memberRepository.findById(memberId).get();
+    }
+
+    @Override
+    public MemberDto login(LoginDto loginDto) throws SQLException {
+        MemberDto memberDto = new MemberDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
+        return memberDto;
     }
 
     @Override
@@ -26,22 +34,33 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void dropMember(Member member) throws SQLException {
-
+    public void dropMember(int memberId) throws SQLException {
+        Member member = findById(memberId);
+        member.dropMember();
     }
 
     @Override
-    public void modifyMemberPassword(Member member) throws SQLException {
-
+    public void modifyMemberPassword(int memberId, String newPassword) throws SQLException {
+        Member member = findById(memberId);
+        member.modifyPassword(newPassword);
     }
 
     @Override
-    public boolean isDuplicatedId(String id) throws SQLException {
+    public boolean isDuplicatedNickname(String nickname) throws SQLException {
+        if (memberRepository.countMembersByNickname(nickname) == 1) {
+            return true;
+        }
+
         return false;
     }
 
+
     @Override
     public boolean isDuplicatedEmail(String email) throws SQLException {
+        if (memberRepository.countMembersByEmail(email) == 1) {
+            return true;
+        }
+
         return false;
     }
 }

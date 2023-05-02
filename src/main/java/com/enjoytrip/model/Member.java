@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Table(name = "members")
-
 public class Member {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private int memberId;
     private String email;
@@ -43,4 +43,27 @@ public class Member {
         this.role = role;
         this.delYn = delYn;
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", registerTime=" + registerTime +
+                ", marketingAgreement=" + marketingAgreement +
+                ", role='" + role + '\'' +
+                ", delYn=" + delYn +
+                '}';
+    }
+
+    public void dropMember() {
+        this.delYn = true;
+    }
+
+    public void modifyPassword(String newPassword) {
+        this.password = newPassword;
+    }
+
 }

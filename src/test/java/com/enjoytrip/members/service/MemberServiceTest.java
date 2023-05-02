@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.MemberDto;
 import com.enjoytrip.model.Member;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,16 +23,21 @@ class MemberServiceTest {
     @Autowired
     MemberService memberService;
 
-
+    @Test
+    void findById() {
+        try {
+            Member member = memberService.findById(12);
+            Assertions.assertEquals(member.getNickname(), "admin");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Test
     void login() {
-        Member member = Member.builder()
-                .memberId(12)
-                .email("admin@admin.com")
-                .password("admin").build();
+        LoginDto loginDto = new LoginDto("admin@admin.com","admin");
         try {
-            Member testMember = memberService.login(member);
-            Assertions.assertEquals(member.getMemberId(), testMember.getMemberId());
+            MemberDto memberDto = memberService.login(loginDto);
+            Assertions.assertEquals(12, memberDto.getMemberId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -44,10 +51,11 @@ class MemberServiceTest {
                 .marketingAgreement(true)
                 .role("user")
                 .email("test@test.com").build();
+        LoginDto loginDto = new LoginDto("test@test.com","test");
         try {
             memberService.join(member);
-            Member testMember = memberService.login(member);
-            Assertions.assertEquals(member.getNickname(), testMember.getNickname());
+            MemberDto memberDto = memberService.login(loginDto);
+            Assertions.assertEquals(member.getNickname(), memberDto.getNickname());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,17 +64,58 @@ class MemberServiceTest {
 
     @Test
     void dropMember() {
+        int memberId = 12;
+        try {
+            memberService.dropMember(memberId);
+            Assertions.assertEquals(memberService.findById(memberId).isDelYn(),true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     void modifyMemberPassword() {
+        int memberId = 12;
+        try {
+            memberService.modifyMemberPassword(memberId,"test");
+            Assertions.assertEquals(memberService.findById(memberId).getPassword(),"test");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Test
-    void isDuplicatedId() {
-    }
+
 
     @Test
     void isDuplicatedEmail() {
+        Member member = Member.builder()
+                .nickname("test")
+                .password("test")
+                .marketingAgreement(true)
+                .role("user")
+                .email("test@test.com").build();
+        try {
+            memberService.join(member);
+            Assertions.assertTrue(memberService.isDuplicatedEmail(member.getEmail()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void isDuplicatedNickname() {
+        Member member = Member.builder()
+                .nickname("test")
+                .password("test")
+                .marketingAgreement(true)
+                .role("user")
+                .email("test@test.com").build();
+        try {
+            memberService.join(member);
+            Assertions.assertTrue(memberService.isDuplicatedNickname(member.getNickname()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
