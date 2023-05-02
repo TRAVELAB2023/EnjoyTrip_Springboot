@@ -54,6 +54,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean isDuplicatedEmail(String email) throws SQLException {
+        if( memberRepository.countMembersByEmail(email)==1){
+            return true;
+        }
+
         return false;
     }
 }

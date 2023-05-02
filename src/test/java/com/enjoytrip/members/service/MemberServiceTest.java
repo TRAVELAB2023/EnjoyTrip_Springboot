@@ -88,6 +88,18 @@ class MemberServiceTest {
 
     @Test
     void isDuplicatedEmail() {
+        Member member = Member.builder()
+                .nickname("test")
+                .password("test")
+                .marketingAgreement(true)
+                .role("user")
+                .email("test@test.com").build();
+        try {
+            memberService.join(member);
+            Assertions.assertTrue(memberService.isDuplicatedEmail(member.getEmail()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

@@ -9,5 +9,6 @@ import java.sql.SQLException;
 public interface MemberRepository extends JpaRepository<Member,Integer> {
     Member findMemberByEmailAndPasswordAndDelYn(String email, String password, boolean delYn);
     int countMembersByNickname(String nickname);
+    int countMembersByEmail(String Email);
 
 }
