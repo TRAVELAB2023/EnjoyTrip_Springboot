@@ -37,9 +37,10 @@ public class SIdoRepoTest {
 
     }
     @Test
-    @DisplayName("대한민국 시군구 조회")
+    @DisplayName("대한민국 군구 조회")
     public void testGetGugunList(){
         List<Gugun> list=sidoRepository.getGugunList(1);
         logger.info("데이터 : {}",list);
+        Assertions.assertEquals(list.size(),25);
     }
 }

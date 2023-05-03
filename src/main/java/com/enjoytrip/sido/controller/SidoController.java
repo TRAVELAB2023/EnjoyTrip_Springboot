@@ -29,8 +29,8 @@ public class SidoController {
         return new ResponseEntity<List<SidoDto>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/test/{sidoCode}")
-    public ResponseEntity<?> getGugun(@PathVariable int sidoCode){
+    @GetMapping("/gugun/{sidoCode}")
+    public ResponseEntity<List<GugunDto>> getGugunList(@PathVariable int sidoCode){
         List<GugunDto> list=sidoService.getGugunList(sidoCode);
         return new ResponseEntity<List<GugunDto>>(list,HttpStatus.OK);
     }

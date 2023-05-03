@@ -1,7 +1,9 @@
 package com.enjoytrip;
 
+import com.enjoytrip.model.Gugun;
 import com.enjoytrip.model.Sido;
 import com.enjoytrip.sido.controller.SidoController;
+import com.enjoytrip.sido.dto.GugunDto;
 import com.enjoytrip.sido.dto.SidoDto;
 import com.enjoytrip.sido.service.SidoService;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,8 +61,20 @@ public class SidoControllerTest {
 
         mockMvc.perform(get("/sido"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().string("{\"sidoCode\":1,\"sidoName\":\"서울\"}"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().string("[{\"sidoCode\":1,\"sidoName\":\"서울\"}]"))
+                .andDo(print());
+    }
+    @Test
+    @DisplayName("대한민국 군구 조회")
+    public void getGugunList() throws Exception {
+        given(sidoService.getGugunList(1))
+                .willReturn(Arrays.asList(new GugunDto(Gugun.builder().gugunName("특별시").gugunCode(1).build())));
+
+        mockMvc.perform(get("/gugun/1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().string("[{\"gugunCode\":1,\"gugunName\":\"특별시\"}]"))
                 .andDo(print());
     }
 }

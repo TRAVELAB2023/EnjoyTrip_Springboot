@@ -1,5 +1,6 @@
 package com.enjoytrip.model;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -17,6 +18,15 @@ public class Gugun {
     @Column(name = "gugun_name", nullable=false)
     private String gugunName;
 
+
+    public Gugun() {
+    }
+
+    @Builder
+    public Gugun(int gugunCode, String gugunName) {
+        this.gugunCode = gugunCode;
+        this.gugunName = gugunName;
+    }
 
     @Override
     public String toString() {

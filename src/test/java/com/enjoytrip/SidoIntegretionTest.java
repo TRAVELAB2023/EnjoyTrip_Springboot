@@ -2,6 +2,7 @@ package com.enjoytrip;
 
 
 import com.enjoytrip.model.Sido;
+import com.enjoytrip.sido.dto.GugunDto;
 import com.enjoytrip.sido.dto.SidoDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +40,16 @@ public class SidoIntegretionTest {
         Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(entity.getBody().size()).isEqualTo(17);
     }
+
+    @Test
+    @DisplayName("대한민국 군구 조회")
+    public void getGugunList(){
+        String url = "http://localhost:"+port+"/gugun/1";
+        ResponseEntity<List<GugunDto>> entity=restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY,new ParameterizedTypeReference<List<GugunDto>>() {});
+        Assertions.assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(entity.getBody().size()).isEqualTo(25);
+    }
+
 
 
 }
