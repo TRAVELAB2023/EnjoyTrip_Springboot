@@ -29,6 +29,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void join(RegisterDto registerDto) throws SQLException {
+        if(isDuplicatedEmail(registerDto.getEmail())||isDuplicatedNickname(registerDto.getNickname())){
+            throw new SQLException();
+        }
         Member member = Member.builder()
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
