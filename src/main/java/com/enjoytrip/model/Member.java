@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
+
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Table(name = "members")
@@ -32,17 +34,7 @@ public class Member {
     @Column(name = "delYn")
     private boolean delYn;
 
-    @Builder
-    public Member(int memberId, String email, String nickname, String password, LocalDateTime registerTime, boolean marketingAgreement, String role, boolean delYn) {
-        this.memberId = memberId;
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-        this.registerTime = registerTime;
-        this.marketingAgreement = marketingAgreement;
-        this.role = role;
-        this.delYn = delYn;
-    }
+
 
     @Override
     public String toString() {

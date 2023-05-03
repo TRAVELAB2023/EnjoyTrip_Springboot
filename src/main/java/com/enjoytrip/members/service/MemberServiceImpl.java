@@ -1,11 +1,10 @@
 package com.enjoytrip.members.service;
 
 import com.enjoytrip.members.dto.LoginDto;
-import com.enjoytrip.members.dto.MemberDto;
+import com.enjoytrip.members.dto.RegisterDto;
+import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
@@ -23,13 +22,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto login(LoginDto loginDto) throws SQLException {
-        MemberDto memberDto = new MemberDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
-        return memberDto;
+    public SessionDto login(LoginDto loginDto) throws SQLException {
+        SessionDto sessionDto = new SessionDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
+        return sessionDto;
     }
 
     @Override
-    public void join(Member member) throws SQLException {
+    public void join(RegisterDto registerDto) throws SQLException {
+        if(isDuplicatedEmail(registerDto.getEmail())||isDuplicatedNickname(registerDto.getNickname())){
+            throw new SQLException();
+        }
+        Member member = Member.builder()
+                .email(registerDto.getEmail())
+                .password(registerDto.getPassword())
+                .marketingAgreement(registerDto.isMarketingAgreement())
+                .nickname(registerDto.getNickname())
+                .role(registerDto.getRole())
+                .build();
+
         memberRepository.save(member);
     }
 

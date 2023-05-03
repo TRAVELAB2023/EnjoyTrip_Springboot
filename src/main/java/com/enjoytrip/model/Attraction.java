@@ -26,6 +26,7 @@ public class Attraction {
     private String title;
 
     @Column(name="addr1")
+
     private String addr1;
 
     @Column(name="first_image")
@@ -45,6 +46,7 @@ public class Attraction {
 
     @Column(name="overview")
     private String overview;
+
 
     @Builder
     public Attraction(int contentId, int contentTypeId, String title, String addr1, String firstImage, int sidoCode, int gugunCode, double latitude, double longitude, String overview) {
@@ -75,4 +77,5 @@ public class Attraction {
                 ", overview='" + overview + '\'' +
                 '}';
     }
+
 }

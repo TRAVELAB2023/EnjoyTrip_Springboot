@@ -8,6 +8,4 @@ import java.util.List;
 public interface AttractionRepositoryCustom {
     List<Attraction> findBySearchCondtion(SearchCondition condition,int memberId);
 
-
-
 }
