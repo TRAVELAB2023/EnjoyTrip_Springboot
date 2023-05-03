@@ -1,4 +1,4 @@
-package com.enjoytrip;
+package com.enjoytrip.sido;
 
 
 import com.enjoytrip.model.Gugun;
@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.PropertySource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @DataJpaTest
