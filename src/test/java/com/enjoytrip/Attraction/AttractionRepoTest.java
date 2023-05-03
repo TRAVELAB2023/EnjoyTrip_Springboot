@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
@@ -90,15 +91,15 @@ public class AttractionRepoTest {
 
     @Test
     @DisplayName("내가 좋아요한 관광지 조회")
+    @Rollback
     public void testGetMemberLikeAttractionList(){
         int memberId=12;
-//        MemberLike memberLike=MemberLike.builder().memberId(memberId).attractionId(125266).build();
-//        memberLikeRepository.save(memberLike);
-
+        MemberLike memberLike=MemberLike.builder().memberId(memberId).attractionId(125266).build();
+        memberLikeRepository.save(memberLike);
         SearchCondition condition=new SearchCondition(0,0,0,null,true);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1234);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,memberId);
         logger.info("데이터 : {}",list);
-        Assertions.assertEquals(list.size(),1);
+        Assertions.assertEquals(1,list.size());
     }
 
 }
