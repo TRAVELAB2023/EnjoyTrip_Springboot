@@ -60,6 +60,14 @@ public class ReportUserServiceImpl implements ReportUserService {
 
     @Override
     public int update(ReportUserDto reportUserDto) throws SQLException {
-        return 0;
+        ReportUser reportUser = ReportUser.builder()
+                .reportId(reportUserDto.getReportId())
+                .reporterMemberId(reportUserDto.getReporterMemberId())
+                .targetMemberId(reportUserDto.getTargetMemberId())
+                .reportType(reportUserDto.getReportType())
+                .deleteYn(reportUserDto.isDeleteYn())
+                .doYn(reportUserDto.isDoYn())
+                .build();
+        return reportUserRepository.save(reportUser).getReportId();
     }
 }

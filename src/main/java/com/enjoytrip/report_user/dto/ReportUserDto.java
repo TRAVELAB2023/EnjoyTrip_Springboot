@@ -26,4 +26,8 @@ public class ReportUserDto {
         this.targetMemberId = targetMemberId;
         this.reportType = reportType;
     }
+
+    public void modifyDoYn(boolean doYn) {
+        this.doYn = doYn;
+    }
 }
