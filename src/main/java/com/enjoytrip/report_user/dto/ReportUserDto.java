@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class ReportUserDto {
-    int reportId;
-    int reporterMemberId;
-    int targetMemberId;
-    int reportType;
-    boolean doYn;
-    boolean deleteYn;
+    private int reportId;
+    private int reporterMemberId;
+    private int targetMemberId;
+    private int reportType;
+    private boolean doYn;
+    private boolean deleteYn;
 
     public ReportUserDto(ReportUser reportUser) {
         this.reportId = reportUser.getReportId();

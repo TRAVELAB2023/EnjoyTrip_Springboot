@@ -2,6 +2,7 @@ package com.enjoytrip.report_user.repository;
 
 import com.enjoytrip.model.ReportUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

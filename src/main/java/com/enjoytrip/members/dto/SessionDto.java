@@ -6,15 +6,15 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class MemberDto {
-    int memberId;
-    String email;
-    String nickname;
-    LocalDateTime registerTime;
-    boolean marketingAgreement;
-    String role;
+public class SessionDto {
+    private int memberId;
+    private String email;
+    private String nickname;
+    private LocalDateTime registerTime;
+    private boolean marketingAgreement;
+    private String role;
 
-    public MemberDto(Member member) {
+    public SessionDto(Member member) {
         this.memberId = member.getMemberId();
         this.email = member.getEmail();
         this.nickname = member.getNickname();
