@@ -1,12 +1,10 @@
 package com.enjoytrip.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 @Entity
