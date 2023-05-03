@@ -1,4 +1,4 @@
-package com.enjoytrip;
+package com.enjoytrip.sido;
 
 import com.enjoytrip.model.Gugun;
 import com.enjoytrip.model.Sido;
