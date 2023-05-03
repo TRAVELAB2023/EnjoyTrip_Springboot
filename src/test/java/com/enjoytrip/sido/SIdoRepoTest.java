@@ -36,10 +36,18 @@ public class SIdoRepoTest {
 
     }
     @Test
-    @DisplayName("대한민국 군구 조회")
+    @DisplayName("대한민국 군구 조회 데이터가 있을 떄")
     public void testGetGugunList(){
         List<Gugun> list=sidoRepository.getGugunList(1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),25);
+    }
+
+    @Test
+    @DisplayName("대한민국 군구 조회 데이터가 없을 떄")
+    public void testGetGugunListEmpty(){
+        List<Gugun> list=sidoRepository.getGugunList(1234);
+        logger.info("데이터 : {}",list);
+        Assertions.assertEquals(list.size(),0);
     }
 }
