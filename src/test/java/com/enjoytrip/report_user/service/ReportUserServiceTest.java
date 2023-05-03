@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SpringBootTest
@@ -18,15 +20,41 @@ class ReportUserServiceTest {
     ReportUserService reportUserService;
 
     @Test
-    void find() {
-    }
-
-    @Test
     void reportUserByReporterId() {
+        List<ReportUserDto> reportUserDtoList = new ArrayList<>();
+        reportUserDtoList.add(new ReportUserDto(17,18,1));
+        reportUserDtoList.add(new ReportUserDto(19,12,1));
+        reportUserDtoList.add(new ReportUserDto(17,20,1));
+        reportUserDtoList.add(new ReportUserDto(18,17,1));
+        reportUserDtoList.add(new ReportUserDto(17,18,1));
+
+        try {
+            for (ReportUserDto reportUserDto : reportUserDtoList) {
+                reportUserService.register(reportUserDto);
+            }
+            Assertions.assertEquals(reportUserService.ReportUserByReporterId(17).size(),3);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Test
     void reportUserByTargetId() {
+        List<ReportUserDto> reportUserDtoList = new ArrayList<>();
+        reportUserDtoList.add(new ReportUserDto(17,18,1));
+        reportUserDtoList.add(new ReportUserDto(19,12,1));
+        reportUserDtoList.add(new ReportUserDto(17,20,1));
+        reportUserDtoList.add(new ReportUserDto(18,17,1));
+        reportUserDtoList.add(new ReportUserDto(17,18,1));
+
+        try {
+            for (ReportUserDto reportUserDto : reportUserDtoList) {
+                reportUserService.register(reportUserDto);
+            }
+            Assertions.assertEquals(reportUserService.ReportUserByTargetId(18).size(),2);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
     @Test
     void reportUserByDoYn() {
