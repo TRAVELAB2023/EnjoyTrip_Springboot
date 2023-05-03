@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface AttractionService {
 
-    List<Attraction> getAttractionList(SearchCondition condition);
+    List<Attraction> getAttractionList(SearchCondition condition,int memberId);
+
 }

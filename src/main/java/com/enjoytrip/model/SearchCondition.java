@@ -10,12 +10,14 @@ public class SearchCondition {
     private int gugunCode;
     private int contentTypeCode;
     private String word;
+    private boolean memberLike;
 
-    public SearchCondition(int sidoCode, int gugunCode, int contentTypeCode,String word) {
+    public SearchCondition(int sidoCode, int gugunCode, int contentTypeCode, String word, boolean memberLike) {
         this.sidoCode = sidoCode;
         this.gugunCode = gugunCode;
         this.contentTypeCode = contentTypeCode;
-        this.word=word;
+        this.word = word;
+        this.memberLike = memberLike;
     }
 
     @Override

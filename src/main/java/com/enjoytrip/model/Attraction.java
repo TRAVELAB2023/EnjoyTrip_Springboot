@@ -59,4 +59,20 @@ public class Attraction {
         this.longitude = longitude;
         this.overview = overview;
     }
+
+    @Override
+    public String toString() {
+        return "Attraction{" +
+                "contentId=" + contentId +
+                ", contentTypeId=" + contentTypeId +
+                ", title='" + title + '\'' +
+                ", addr1='" + addr1 + '\'' +
+                ", firstImage='" + firstImage + '\'' +
+                ", sidoCode=" + sidoCode +
+                ", gugunCode=" + gugunCode +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", overview='" + overview + '\'' +
+                '}';
+    }
 }

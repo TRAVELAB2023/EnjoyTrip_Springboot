@@ -2,10 +2,8 @@ package com.enjoytrip.Attraction;
 
 
 import com.enjoytrip.attraction.repository.AttractionRepository;
-import com.enjoytrip.model.Attraction;
-import com.enjoytrip.model.Gugun;
-import com.enjoytrip.model.SearchCondition;
-import com.enjoytrip.model.Sido;
+import com.enjoytrip.member_like.repository.MemberLikeRepository;
+import com.enjoytrip.model.*;
 import com.enjoytrip.sido.repository.SidoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -29,12 +27,13 @@ public class AttractionRepoTest {
     @Autowired
     private AttractionRepository attractionRepository;
 
-
+    @Autowired
+    private MemberLikeRepository memberLikeRepository;
     @Test
     @DisplayName("전체 관광지 조회")
     public void testGetAttractionList(){
-        SearchCondition condition=new SearchCondition(0,0,0,null);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(0,0,0,null,false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),200);
 
@@ -42,8 +41,8 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 도 관광지 조회(결과가 있을 때)")
     public void testGetSidoAttractionList(){
-        SearchCondition condition=new SearchCondition(1,1,0,null);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(1,1,0,null,false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),200);
 
@@ -52,8 +51,8 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 도 관광지 조회(결과가 없을 때)")
     public void testGetSidoAttractionListEmpty(){
-        SearchCondition condition=new SearchCondition(2141,0,1,null);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(2141,0,1,null,false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),0);
 
@@ -62,8 +61,8 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 시군구 관광지 조회(결과가 있을 때)")
     public void testGetGugunAttractionList(){
-        SearchCondition condition=new SearchCondition(1,2,0,null);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(1,2,0,null,false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),86);
 
@@ -71,8 +70,8 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 시군구 관광지 조회(결과가 없을 때)")
     public void testGetGugunAttractionListEmpty(){
-        SearchCondition condition=new SearchCondition(1,200,0,null);
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(1,200,0,null,false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),0);
 
@@ -81,11 +80,25 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 시군구와 단어가 포함된 관광지 조회(결과가 있을 때)")
     public void testGetGugunWordAttractionList(){
-        SearchCondition condition=new SearchCondition(1,2,0,"호텔");
-        List<Attraction> list=attractionRepository.findBySearchCondtion(condition);
+        SearchCondition condition=new SearchCondition(1,2,0,"호텔",false);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1);
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(list.size(),1);
 
+    }
+
+
+    @Test
+    @DisplayName("내가 좋아요한 관광지 조회")
+    public void testGetMemberLikeAttractionList(){
+        int memberId=12;
+//        MemberLike memberLike=MemberLike.builder().memberId(memberId).attractionId(125266).build();
+//        memberLikeRepository.save(memberLike);
+
+        SearchCondition condition=new SearchCondition(0,0,0,null,true);
+        List<Attraction> list=attractionRepository.findBySearchCondtion(condition,1234);
+        logger.info("데이터 : {}",list);
+        Assertions.assertEquals(list.size(),1);
     }
 
 }

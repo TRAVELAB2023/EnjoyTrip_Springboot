@@ -20,13 +20,15 @@ public class AttractionController {
     public AttractionController(AttractionService attractionService) {
         this.attractionService = attractionService;
     }
+
     @GetMapping("/attraction")
     public ResponseEntity<?> getAttractionList(@RequestParam(required = false,defaultValue = "0") int sidoCode,
                                                @RequestParam(required = false,defaultValue = "0") int gugunCode,
                                                @RequestParam(required = false,defaultValue = "0") int contentTypeCode,
-                                               @RequestParam(required = false,defaultValue = "0") String word){
-        SearchCondition conditon=new SearchCondition(sidoCode,gugunCode,contentTypeCode,word);
-        List<Attraction> list=attractionService.getAttractionList(conditon);
+                                               @RequestParam(required = false,defaultValue = "0") String word,
+                                               @RequestParam(required = false,defaultValue = "false") boolean memberLike){
+        SearchCondition conditon=new SearchCondition(sidoCode,gugunCode,contentTypeCode,word,memberLike);
+        List<Attraction> list=attractionService.getAttractionList(conditon,1);
         return new ResponseEntity<List<Attraction>>(list, HttpStatus.OK);
     }
 }

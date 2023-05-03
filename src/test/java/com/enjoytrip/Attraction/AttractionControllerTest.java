@@ -56,8 +56,8 @@ public class AttractionControllerTest {
     @Test
     @DisplayName("관광지 조회")
     public void getAttractionList() throws Exception {
-        SearchCondition condition=new SearchCondition(1,1,1,"title");
-        given(attractionService.getAttractionList(condition))
+        SearchCondition condition=new SearchCondition(1,1,1,"title",false);
+        given(attractionService.getAttractionList(condition,1))
                 .willReturn(Arrays.asList(Attraction.builder()
                                                     .contentTypeId(1)
                                                     .contentId(1)
