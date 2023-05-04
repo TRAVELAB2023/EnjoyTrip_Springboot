@@ -28,29 +28,26 @@ class MemberServiceTest {
             throw new RuntimeException(e);
         }
     }
+
     @Test
-    void login() {
-        LoginDto loginDto = new LoginDto("admin@admin.com","admin");
-        try {
-            SessionDto  registerDto = memberService.login(loginDto);
-            Assertions.assertEquals(12, registerDto.getMemberId());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    void login() throws Exception {
+        LoginDto loginDto = new LoginDto("admin@admin.com", "admin");
+
+        SessionDto registerDto = memberService.login(loginDto);
+        Assertions.assertEquals(12, registerDto.getMemberId());
+
     }
 
     @Test
-    void join() {
-        RegisterDto registerDto = new RegisterDto("test@test.com","test",true,"test");
-        LoginDto loginDto = new LoginDto("test@test.com","test");
-        try {
-            memberService.join(registerDto);
-            SessionDto sessionDto = memberService.login(loginDto);
-            Assertions.assertEquals(sessionDto.getNickname(), "test");
+    void join() throws Exception {
+        RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
+        LoginDto loginDto = new LoginDto("test@test.com", "test");
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        memberService.join(registerDto);
+        SessionDto sessionDto = memberService.login(loginDto);
+        Assertions.assertEquals(sessionDto.getNickname(), "test");
+
+
     }
 
     @Test
@@ -58,7 +55,7 @@ class MemberServiceTest {
         int memberId = 12;
         try {
             memberService.dropMember(memberId);
-            Assertions.assertEquals(memberService.findById(memberId).isDelYn(),true);
+            Assertions.assertEquals(memberService.findById(memberId).isDelYn(), true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -69,18 +66,17 @@ class MemberServiceTest {
     void modifyMemberPassword() {
         int memberId = 12;
         try {
-            memberService.modifyMemberPassword(memberId,"test");
-            Assertions.assertEquals(memberService.findById(memberId).getPassword(),"test");
+            memberService.modifyMemberPassword(memberId, "test");
+            Assertions.assertEquals(memberService.findById(memberId).getPassword(), "test");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
 
-
     @Test
     void isDuplicatedEmail() {
-        RegisterDto registerDto = new RegisterDto("test@test.com","test",true,"test");
+        RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
         try {
             memberService.join(registerDto);
             Assertions.assertTrue(memberService.isDuplicatedEmail(registerDto.getEmail()));
@@ -91,7 +87,7 @@ class MemberServiceTest {
 
     @Test
     void isDuplicatedNickname() {
-        RegisterDto registerDto = new RegisterDto("test@test.com","test",true,"test");
+        RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
         try {
             memberService.join(registerDto);
             Assertions.assertTrue(memberService.isDuplicatedNickname(registerDto.getNickname()));

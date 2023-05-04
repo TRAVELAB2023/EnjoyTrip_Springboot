@@ -1,11 +1,16 @@
 package com.enjoytrip.members.controller;
 
+import com.enjoytrip.members.dto.SessionDto;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import static org.hamcrest.Matchers.containsString;
@@ -19,93 +24,88 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 class MemberControllerTest {
+    String email = "test@test.com";
+    String nickname = "test";
+    String password = "test1234";
+    boolean marketing = true;
+
 
     @Autowired
     MockMvc mockMvc;
 
     @Test
+    @DisplayName("회원가입테스트")
     void register() {
-        //given
-        String email = "test@test.com";
-        String nickname = "test";
-        String password = "test1234";
-        boolean marketing = true;
-
-        //when
         //then
         try {
             mockMvc.perform(post("/register")
-                            .param("email", email)
-                            .param("nickname", nickname)
-                            .param("password", password)
-                            .param("marketing", String.valueOf(marketing))
-
-                    ).andExpect(status().isOk());
+                    .param("email", email)
+                    .param("nickname", nickname)
+                    .param("password", password)
+                    .param("marketing", String.valueOf(marketing))
+            ).andExpect(status().isOk());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
-    void register_fail() {
-        //given
-        String email = "test@test.com";
-        String nickname = "test";
-        String password = "test1234";
-        boolean marketing = true;
-
-        //when
-
+    @DisplayName("중복 이메일 가입 테스트")
+    void register_fail() throws Exception {
         //then
-        try {
-            mockMvc.perform(post("/register")
-                    .param("email", email)
-                    .param("nickname", nickname)
-                    .param("password", password)
-                    .param("marketing", String.valueOf(marketing))
+        mockMvc.perform(post("/register")
+                .param("email", email)
+                .param("nickname", nickname)
+                .param("password", password)
+                .param("marketing", String.valueOf(marketing))
 
-            ).andExpect(status().isOk());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            mockMvc.perform(post("/register")
-                    .param("email", email)
-                    .param("nickname", nickname)
-                    .param("password", password)
-                    .param("marketing", String.valueOf(marketing))
-
-            ).andExpect(status().isBadRequest());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        );
+        mockMvc.perform(post("/register")
+                .param("email", email)
+                .param("nickname", nickname)
+                .param("password", password)
+                .param("marketing", String.valueOf(marketing))
+        ).andExpect(status().isBadRequest());
     }
 
     @Test
+    @DisplayName("로그인 테스트")
     void login() throws Exception {
-        String email = "test@test.com";
-        String nickname = "test";
-        String password = "test1234";
-        boolean marketing = true;
-
-
         mockMvc.perform(post("/register")
                 .param("email", email)
                 .param("nickname", nickname)
                 .param("password", password)
                 .param("marketing", String.valueOf(marketing))
         );
-
+        MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
+                        .session(session)
+                        .param("email", email)
+                        .param("password", password))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
+        Assertions.assertEquals(sessionDto.getEmail(), email);
+        Assertions.assertEquals(sessionDto.getNickname(), nickname);
+        Assertions.assertEquals(sessionDto.isMarketingAgreement(), marketing);
+    }
+
+    @Test
+    @DisplayName("로그인 실패 테스트")
+    void login_fail() throws Exception {
+        mockMvc.perform(post("/register")
                 .param("email", email)
+                .param("nickname", nickname)
                 .param("password", password)
-        ).andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"email\":\"test@test.com\"")))
-                .andExpect(content().string(containsString("\"nickname\":\"test\"")))
-                .andExpect(content().string(containsString("\"marketingAgreement\":true")))
-                .andExpect(content().string(containsString("\"role\":\"user\"")))
-                ;
-
-
+                .param("marketing", String.valueOf(marketing))
+        );
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(post("/login")
+                        .session(session)
+                        .param("email", "email")
+                        .param("password", password))
+                .andExpect(status().isUnauthorized())
+                .andDo(print());
     }
 }

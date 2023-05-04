@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public SessionDto login(LoginDto loginDto) throws SQLException {
+    public SessionDto login(LoginDto loginDto) throws Exception {
         SessionDto sessionDto = new SessionDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
         return sessionDto;
     }
