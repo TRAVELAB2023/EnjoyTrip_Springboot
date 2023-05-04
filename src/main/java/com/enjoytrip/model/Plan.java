@@ -1,30 +1,49 @@
 package com.enjoytrip.model;
 
 
+import com.enjoytrip.BaseTimeEntity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
 @Table(name = "plan")
 @NoArgsConstructor
-public class Plan {
+public class Plan extends BaseTimeEntity {
     @Id
-    @Column(name="plan_id")
-    private int planId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "plan_id")
+    private Integer planId;
 
-    @Column(name="title", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name="member_id")
+    @Column(name = "member_id", nullable = false)
     private int memberId;
 
-    @Column(name="register_time")
-    private LocalDateTime register_time;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "plan_id")
+    private List<PlanDetail> planDetailList;
+
+
+    @Builder
+    public Plan(String title, int memberId) {
+        this.title = title;
+        this.memberId = memberId;
+    }
+
+
+    public void add(PlanDetail planDetail) {
+        if(planDetailList==null){
+            planDetailList=new ArrayList<>();
+        }
+        planDetailList.add(planDetail);
+    }
+
 }
