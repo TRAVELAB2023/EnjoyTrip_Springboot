@@ -1,6 +1,7 @@
 package com.enjoytrip.model;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.Column;

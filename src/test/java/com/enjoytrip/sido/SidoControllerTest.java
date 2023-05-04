@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.inject.Inject;
 import java.util.Arrays;
 
 import static org.mockito.BDDMockito.given;
@@ -31,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(SidoController.class)
+@ExtendWith(SpringExtension.class)
 public class SidoControllerTest {
 
 
@@ -40,9 +44,9 @@ public class SidoControllerTest {
     MockMvc mockMvc;
 
 
-    @Autowired
+    @InjectMocks
     SidoController sidoController;
-    @MockBean
+    @Mock
     SidoService sidoService;
     @BeforeEach
     public void setup() {
@@ -58,7 +62,6 @@ public class SidoControllerTest {
     public void getSido() throws Exception {
         given(sidoService.getSidoList())
                 .willReturn(Arrays.asList(new SidoDto(Sido.builder().sidoName("서울").sidoCode(1).build())));
-
         mockMvc.perform(get("/sido"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
