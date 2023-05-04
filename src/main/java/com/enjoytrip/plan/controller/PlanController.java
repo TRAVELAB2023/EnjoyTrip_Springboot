@@ -33,13 +33,13 @@ public class PlanController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @GetMapping("/${planId}")
+    @GetMapping("/{planId}")
     public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId){
         List<Attraction> list=planService.findByPlanId(planId);
         return new ResponseEntity<List<Attraction>>(list,HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<PlanDto>> getPlanList(HttpSession session, @RequestParam @PageableDefault Pageable pageable){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         List<PlanDto> list=planService.findByMemberId(sessionDto.getMemberId(),pageable);
@@ -47,7 +47,7 @@ public class PlanController {
     }
 
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Void> postPlan(HttpSession session, @RequestBody PlanRequestDto planRequestDto){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         planService.savePlan(sessionDto.getMemberId(),planRequestDto);
