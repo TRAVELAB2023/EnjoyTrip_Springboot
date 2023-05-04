@@ -1,6 +1,7 @@
 package com.enjoytrip.members.controller;
 
 
+import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.service.MemberService;
@@ -23,26 +24,35 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    @ResponseBody
     public ResponseEntity logout(HttpSession session) {
-        if(session.getAttribute("userinfo")==null){
-         throw new IllegalArgumentException();
+        if (session.getAttribute("userinfo") == null) {
+            throw new IllegalArgumentException();
         }
         session.invalidate();
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PatchMapping("/dropMember")
-    @ResponseBody
+    @PatchMapping("/drop-member")
     public ResponseEntity dropMember(HttpSession session) throws SQLException {
         SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
 
-        if (sessionDto == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+        memberService.dropMember(sessionDto.getMemberId());
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
-            memberService.dropMember(sessionDto.getMemberId());
+    @PostMapping("/password-check")
+    public ResponseEntity checkPassword(@RequestBody LoginDto loginDto) throws Exception {
+        if (memberService.isWritePassword(loginDto)) {
             return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
 
+    }
+
+    @PatchMapping("/modify-password")
+    public ResponseEntity modifyPassword(@RequestParam("newPassword") String password, HttpSession session) throws SQLException {
+        SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
+        memberService.modifyMemberPassword(sessionDto.getMemberId(),password);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

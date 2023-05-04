@@ -84,4 +84,13 @@ public class MemberServiceImpl implements MemberService {
 
         return false;
     }
+
+    @Override
+    public boolean isWritePassword(LoginDto loginDto) throws Exception {
+        if (login(loginDto) != null) {
+            return true;
+        }
+
+        return false;
+    }
 }

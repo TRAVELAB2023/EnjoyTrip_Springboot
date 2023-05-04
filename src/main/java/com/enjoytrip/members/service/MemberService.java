@@ -16,4 +16,6 @@ public interface MemberService {
     public void modifyMemberPassword(int memberId, String newPassword) throws SQLException;
     public boolean isDuplicatedNickname(String nickname) throws SQLException;
     public boolean isDuplicatedEmail(String email) throws SQLException;
+
+    public boolean isWritePassword(LoginDto loginDto) throws Exception;
 }
