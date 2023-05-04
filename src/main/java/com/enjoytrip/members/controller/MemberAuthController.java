@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -23,39 +24,22 @@ public class MemberAuthController {
     }
 
     @PostMapping("/register")
-    @ResponseBody
-    public ResponseEntity register(@RequestParam Map<String, String> map) {
-        boolean marketingAgreement = map.get("marketing").equals("true");
-        RegisterDto registerDto = new RegisterDto(map.get("email"), map.get("nickname"), marketingAgreement, map.get("password"));
-        try {
-            memberService.join(registerDto);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (SQLException e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity register(@Valid @RequestBody RegisterDto registerDto) throws SQLException {
+
+        memberService.join(registerDto);
+        return new ResponseEntity(HttpStatus.OK);
+
     }
 
 
     @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity login(@RequestParam Map<String, String> map, HttpSession session) {
-        LoginDto loginDto = null;
-        try {
-            loginDto = new LoginDto(map.get("email"), map.get("password"));
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity login(@Valid @RequestBody LoginDto loginDto, HttpSession session) throws Exception {
 
-        try {
-            SessionDto sessionDto = memberService.login(loginDto);
-            session.setAttribute("userinfo", sessionDto);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
+        SessionDto sessionDto = memberService.login(loginDto);
+        session.setAttribute("userinfo", sessionDto);
+        return new ResponseEntity(HttpStatus.OK);
+
     }
-
-
 
 
 }

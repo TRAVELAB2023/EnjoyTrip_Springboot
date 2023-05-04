@@ -2,6 +2,7 @@ package com.enjoytrip.members.controller;
 
 
 import com.enjoytrip.members.dto.RegisterDto;
+import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,23 @@ public class MemberController {
     @ResponseBody
     public ResponseEntity logout(HttpSession session) {
         if(session.getAttribute("userinfo")==null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+         throw new IllegalArgumentException();
         }
         session.invalidate();
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PatchMapping("/dropMember")
+    @ResponseBody
+    public ResponseEntity dropMember(HttpSession session) throws SQLException {
+        SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
+
+        if (sessionDto == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+            memberService.dropMember(sessionDto.getMemberId());
+            return new ResponseEntity(HttpStatus.OK);
+
     }
 }

@@ -1,12 +1,16 @@
 package com.enjoytrip.members.controller;
 
+import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -28,7 +32,10 @@ class MemberControllerTest {
     String nickname = "test";
     String password = "test1234";
     boolean marketing = true;
+    RegisterDto registerDto = new RegisterDto(email, nickname, marketing, password);
+    LoginDto loginDto = new LoginDto(email, password);
 
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     MockMvc mockMvc;
@@ -39,10 +46,8 @@ class MemberControllerTest {
         //then
         try {
             mockMvc.perform(post("/register")
-                    .param("email", email)
-                    .param("nickname", nickname)
-                    .param("password", password)
-                    .param("marketing", String.valueOf(marketing))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(registerDto))
             ).andExpect(status().isOk());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -54,36 +59,30 @@ class MemberControllerTest {
     void register_fail() throws Exception {
         //then
         mockMvc.perform(post("/register")
-                .param("email", email)
-                .param("nickname", nickname)
-                .param("password", password)
-                .param("marketing", String.valueOf(marketing))
-
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
         );
+
         mockMvc.perform(post("/register")
-                .param("email", email)
-                .param("nickname", nickname)
-                .param("password", password)
-                .param("marketing", String.valueOf(marketing))
-        ).andExpect(status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
+        ).andExpect(status().isUnauthorized());
     }
 
     @Test
     @DisplayName("로그인 테스트")
     void login() throws Exception {
         mockMvc.perform(post("/register")
-                .param("email", email)
-                .param("nickname", nickname)
-                .param("password", password)
-                .param("marketing", String.valueOf(marketing))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
         );
+
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
                         .session(session)
-                        .param("email", email)
-                        .param("password", password))
-                .andExpect(status().isOk())
-                .andDo(print());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDto)))
+                .andExpect(status().isOk());
 
         SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
         Assertions.assertEquals(sessionDto.getEmail(), email);
@@ -95,17 +94,35 @@ class MemberControllerTest {
     @DisplayName("로그인 실패 테스트")
     void login_fail() throws Exception {
         mockMvc.perform(post("/register")
-                .param("email", email)
-                .param("nickname", nickname)
-                .param("password", password)
-                .param("marketing", String.valueOf(marketing))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
         );
+
+        LoginDto loginDtoF = new LoginDto(email,"fail");
+
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
                         .session(session)
-                        .param("email", "email")
-                        .param("password", password))
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDtoF)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("로그인 타입 실패 테스트")
+    void login_fail_type() throws Exception {
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
+        );
+
+
+        LoginDto loginDto1 = new LoginDto("123","1 23");
+        MockHttpSession session = new MockHttpSession();
+        mockMvc.perform(post("/login")
+                        .session(session)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDto1)))
+                .andExpect(status().isBadRequest()).andDo(print());
     }
 }

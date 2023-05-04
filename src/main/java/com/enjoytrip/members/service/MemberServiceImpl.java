@@ -30,12 +30,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void join(RegisterDto registerDto) throws SQLException {
         if(isDuplicatedEmail(registerDto.getEmail())||isDuplicatedNickname(registerDto.getNickname())){
-            throw new SQLException();
+            throw new IllegalArgumentException();
         }
         Member member = Member.builder()
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
-                .marketingAgreement(registerDto.isMarketingAgreement())
+                .marketingAgreement(registerDto.isMarketing())
                 .nickname(registerDto.getNickname())
                 .role(registerDto.getRole())
                 .build();
