@@ -63,12 +63,9 @@ public class PlanServiceImpl implements PlanService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Attraction> findByPlanId(int planId,int memberId) {
+    public List<Attraction> findByPlanId(int planId) {
         Plan plan=planRepository.findByPlanId(planId)
                                 .orElseThrow(() -> new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
-        if(plan.getMemberId()!=memberId){
-            throw new PlanException(PlanExceptionMessage.NO_AUTH);
-        }
         return planRepository.findAttractionByPlanId(planId);
     }
 

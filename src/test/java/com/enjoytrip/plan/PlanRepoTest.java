@@ -140,32 +140,12 @@ public class PlanRepoTest {
 
 
     }
-    @Test
-    @DisplayName("다른 사람의 플랜에 포함된 관광지 조회(예외 처리)")
-    public void testFindByPlanIdException(){
-
-        int memberId=member.getMemberId();
-        int anotherMemberId=Integer.MAX_VALUE;
-        final Plan plan=Plan.builder()
-                .memberId(memberId)
-                .title("테스트 용도 플랜").build();
-        planRepository.save(plan);
-        plan.add(PlanDetail.builder().contentId(125266).planId(plan.getPlanId()).build());
-        plan.add(PlanDetail.builder().contentId(125405).planId(plan.getPlanId()).build());
-        planRepository.save(plan);
-        Assertions.assertThrows(PlanException.class,()-> {
-            Plan plan2=planRepository.findByPlanId(plan.getPlanId())
-                    .orElseThrow(() -> new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
-            if(plan2.getMemberId()!=anotherMemberId){
-                throw new PlanException(PlanExceptionMessage.NO_AUTH);
-            }
-            planRepository.findAttractionByPlanId(plan.getPlanId());
-        });
 
 
 
 
 
 
-    }
+
+
 }
