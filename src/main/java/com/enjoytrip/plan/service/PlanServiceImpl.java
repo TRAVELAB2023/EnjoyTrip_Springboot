@@ -1,14 +1,18 @@
 package com.enjoytrip.plan.service;
 
+import com.enjoytrip.exception.PlanException;
+import com.enjoytrip.exception.PlanExceptionMessage;
+import com.enjoytrip.model.Attraction;
 import com.enjoytrip.model.Plan;
 import com.enjoytrip.model.PlanDetail;
 import com.enjoytrip.plan.dto.PlanDto;
+import com.enjoytrip.plan.dto.PlanRequestDto;
 import com.enjoytrip.plan.repository.PlanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +25,7 @@ public class PlanServiceImpl implements PlanService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PlanDto> findByMemberId(int memberId,Pageable pageable) {
         Page<Plan> planList=planRepository.findPageByMemberId(memberId,pageable);
         List<PlanDto> resultList=new ArrayList<>();
@@ -32,7 +37,9 @@ public class PlanServiceImpl implements PlanService{
 
     @Override
     @Transactional
-    public void savePlan(int memberId, String planName, List<Integer> contentIdList) {
+    public void savePlan(int memberId, PlanRequestDto planRequestDto) {
+        String planName=planRequestDto.getPlanName();
+        List<Integer> contentIdList=planRequestDto.getContentIdList();
         Plan plan=Plan.builder()
                 .memberId(memberId)
                 .title(planName).build();
@@ -41,6 +48,28 @@ public class PlanServiceImpl implements PlanService{
             plan.add(PlanDetail.builder().contentId(contentId).planId(plan.getPlanId()).build());
         }
         planRepository.save(plan);
+    }
+
+    @Override
+    @Transactional
+    public void deletePlan(int planId,int memberId) {
+        Plan plan=planRepository.findByPlanId(planId)
+                                .orElseThrow(() -> new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
+        if(plan.getMemberId()!=memberId){
+            throw new PlanException(PlanExceptionMessage.NO_AUTH);
+        }
+        planRepository.delete(plan);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Attraction> findByPlanId(int planId,int memberId) {
+        Plan plan=planRepository.findByPlanId(planId)
+                                .orElseThrow(() -> new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
+        if(plan.getMemberId()!=memberId){
+            throw new PlanException(PlanExceptionMessage.NO_AUTH);
+        }
+        return planRepository.findAttractionByPlanId(planId);
     }
 
 
