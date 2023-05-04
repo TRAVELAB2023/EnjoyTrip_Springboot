@@ -14,13 +14,9 @@ public class ExceptionAdvise {
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity IllegalExceptionHandle(){
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler(MemberException.class)
+    public ResponseEntity<String> MemberExceptionHandle(MemberException memberException){
+        return new ResponseEntity(memberException.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity NullExceptionHandle(){
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-    }
 }

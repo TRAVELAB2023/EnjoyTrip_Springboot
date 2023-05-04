@@ -55,7 +55,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("중복 이메일 가입 테스트")
+    @DisplayName("중복 이메일&아이디 가입 테스트")
     void register_fail() throws Exception {
         //then
         mockMvc.perform(post("/register")
@@ -64,9 +64,10 @@ class MemberControllerTest {
         );
 
         mockMvc.perform(post("/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerDto))
-        ).andExpect(status().isUnauthorized());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerDto))
+                ).andExpect(status().isUnauthorized())
+                .andExpect(content().string(equalTo("이메일과 닉네임이 중복되었습니다.")));
     }
 
     @Test
@@ -98,14 +99,15 @@ class MemberControllerTest {
                 .content(objectMapper.writeValueAsString(registerDto))
         );
 
-        LoginDto loginDtoF = new LoginDto(email,"fail");
+        LoginDto loginDtoF = new LoginDto(email, "fail");
 
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
                         .session(session)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginDtoF)))
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().string(equalTo("아이디 혹은 비밀번호가 틀렸습니다.")));
     }
 
     @Test
@@ -117,7 +119,7 @@ class MemberControllerTest {
         );
 
 
-        LoginDto loginDto1 = new LoginDto("123","1 23");
+        LoginDto loginDto1 = new LoginDto("123", "1 23");
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
                         .session(session)

@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.exception.MemberException;
+import com.enjoytrip.exception.MemberExceptionMessage;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
@@ -23,14 +25,23 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public SessionDto login(LoginDto loginDto) throws Exception {
-        SessionDto sessionDto = new SessionDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
+        Member member = memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false);
+        if (member == null) {
+            throw new MemberException(MemberExceptionMessage.WRONG_ID_OR_PASSWORD);
+        }
+        SessionDto sessionDto = new SessionDto(member);
+
         return sessionDto;
     }
 
     @Override
     public void join(RegisterDto registerDto) throws SQLException {
-        if(isDuplicatedEmail(registerDto.getEmail())||isDuplicatedNickname(registerDto.getNickname())){
-            throw new IllegalArgumentException();
+        if(isDuplicatedEmail(registerDto.getEmail())&&isDuplicatedNickname(registerDto.getNickname())){
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL_AND_NICKNAME);
+        } else if (isDuplicatedEmail(registerDto.getEmail())) {
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL);
+        } else if (isDuplicatedNickname(registerDto.getNickname())) {
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_NICKNAME);
         }
         Member member = Member.builder()
                 .email(registerDto.getEmail())
