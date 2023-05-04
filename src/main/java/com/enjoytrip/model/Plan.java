@@ -28,7 +28,7 @@ public class Plan extends BaseTimeEntity {
     private int memberId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "plan_id")
+    @JoinColumn(name = "plan_id", updatable = false)
     private List<PlanDetail> planDetailList;
 
 
