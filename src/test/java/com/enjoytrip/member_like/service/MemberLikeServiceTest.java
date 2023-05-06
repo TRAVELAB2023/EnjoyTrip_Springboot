@@ -1,6 +1,6 @@
 package com.enjoytrip.member_like.service;
 
-import com.enjoytrip.model.MemberLike;
+import com.enjoytrip.member_like.dto.MemberLikeDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,14 +20,12 @@ class MemberLikeServiceTest {
 
     @Test
     void registerLike() {
-        MemberLike memberLike = MemberLike.builder().
-                memberId(12)
-                .attractionId(125266).
-                build();
-        try {
-            memberLikeService.registerLike(memberLike);
+        MemberLikeDto memberLikeDto = new MemberLikeDto(12, 125266);
 
-            assertTrue(memberLikeService.isCanFind(memberLike.getMemberId(),memberLike.getAttractionId()));
+        try {
+            memberLikeService.registerLike(memberLikeDto);
+
+            assertTrue(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,15 +33,12 @@ class MemberLikeServiceTest {
 
     @Test
     void deleteLike() {
-        MemberLike memberLike = MemberLike.builder().
-                memberId(12)
-                .attractionId(125266).
-                build();
+        MemberLikeDto memberLikeDto = new MemberLikeDto(12, 125266);
         try {
-            memberLikeService.registerLike(memberLike);
-            assertTrue(memberLikeService.isCanFind(memberLike.getMemberId(),memberLike.getAttractionId()));
-            memberLikeService.deleteLike(memberLike.getMemberId(),memberLike.getAttractionId());
-            assertFalse(memberLikeService.isCanFind(memberLike.getMemberId(),memberLike.getAttractionId()));
+            memberLikeService.registerLike(memberLikeDto);
+            assertTrue(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
+            memberLikeService.deleteLike(memberLikeDto);
+            assertFalse(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

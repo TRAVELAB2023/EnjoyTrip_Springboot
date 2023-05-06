@@ -1,5 +1,6 @@
 package com.enjoytrip.member_like.service;
 
+import com.enjoytrip.member_like.dto.MemberLikeDto;
 import com.enjoytrip.member_like.repository.MemberLikeRepository;
 import com.enjoytrip.model.MemberLike;
 
@@ -14,13 +15,17 @@ public class MemberLikeServiceImpl implements MemberLikeService {
     }
 
     @Override
-    public void registerLike(MemberLike memberLike) throws SQLException{
+    public void registerLike(MemberLikeDto memberLikeDto) throws SQLException{
+        MemberLike memberLike = MemberLike.builder()
+                .memberId(memberLikeDto.getMemberId())
+                .attractionId(memberLikeDto.getAttractionId())
+                .build();
         memberLikeRepository.save(memberLike);
     }
 
     @Override
-    public void deleteLike(int memberId, int attractionId)throws SQLException {
-        memberLikeRepository.deleteByMemberIdAndAttractionId(memberId,attractionId);
+    public void deleteLike(MemberLikeDto memberLikeDto)throws SQLException {
+        memberLikeRepository.deleteByMemberIdAndAttractionId(memberLikeDto.getMemberId(), memberLikeDto.getAttractionId());
 
     }
 

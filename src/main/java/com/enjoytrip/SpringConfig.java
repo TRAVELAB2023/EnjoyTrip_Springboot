@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
     private final MemberRepository memberRepository;
     private final MemberLikeRepository memberLikeRepository;
-
     private final ReportUserRepository reportUserRepository;
 
     public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository) {
