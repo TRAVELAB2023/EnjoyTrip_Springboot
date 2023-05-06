@@ -3,6 +3,7 @@ package com.enjoytrip.members.controller;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +21,7 @@ import javax.transaction.Transactional;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -126,5 +129,31 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginDto1)))
                 .andExpect(status().isBadRequest()).andDo(print());
+    }
+
+    @Test
+    @DisplayName("중복 이메일 테스트-중복")
+    void duplicated_email_test_중복() throws Exception {
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
+        );
+        mockMvc.perform(get("/check-duplicate-email/test@test.com")
+        ).andExpect(status().isOk())
+                .andExpect(content().string(equalTo("중복")));
+
+    }
+
+    @Test
+    @DisplayName("중복 이메일 테스트-사용가능")
+    void duplicated_email_test_사용가능() throws Exception {
+        mockMvc.perform(post("/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerDto))
+        );
+        mockMvc.perform(get("/check-duplicate-email/none@test.com")
+                ).andExpect(status().isOk())
+                .andExpect(content().string(equalTo("사용가능")));
+
     }
 }

@@ -40,6 +40,22 @@ public class MemberAuthController {
         return new ResponseEntity(HttpStatus.OK);
 
     }
+    @GetMapping("/check-duplicate-email/{email}")
+    public ResponseEntity<String> isDuplicatedEmail(@PathVariable(name = "email") String email) throws SQLException {
+        if (memberService.isDuplicatedEmail(email)) {
+            return new ResponseEntity("중복", HttpStatus.OK);
+        }
+        return new ResponseEntity("사용가능", HttpStatus.OK);
 
+    }
+
+    @GetMapping("/check-duplicate-nickname/{nickname}")
+    public ResponseEntity<String> isDuplicatedNickname(@PathVariable(name = "nickname") String nickname) throws SQLException {
+        if (memberService.isDuplicatedNickname(nickname)) {
+            return new ResponseEntity("중복", HttpStatus.OK);
+        }
+        return new ResponseEntity("사용가능", HttpStatus.OK);
+
+    }
 
 }

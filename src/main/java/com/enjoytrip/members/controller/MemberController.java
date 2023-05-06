@@ -55,4 +55,6 @@ public class MemberController {
         memberService.modifyMemberPassword(sessionDto.getMemberId(),password);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
 }

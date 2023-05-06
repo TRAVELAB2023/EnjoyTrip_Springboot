@@ -1,6 +1,7 @@
 package com.enjoytrip.report_user.service;
 
 
+import com.enjoytrip.members.service.MemberService;
 import com.enjoytrip.report_user.dto.ReportUserDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,21 +23,26 @@ class ReportUserServiceTest {
     @Autowired
     ReportUserService reportUserService;
 
+    @Autowired
+    MemberService memberService;
+
+    @BeforeAll
+
 
     @Test
     void reportUserByReporterId() {
         List<ReportUserDto> reportUserDtoList = new ArrayList<>();
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
-        reportUserDtoList.add(new ReportUserDto(19,12,1));
-        reportUserDtoList.add(new ReportUserDto(17,20,1));
-        reportUserDtoList.add(new ReportUserDto(18,17,1));
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
+        reportUserDtoList.add(new ReportUserDto(29,12,1));
+        reportUserDtoList.add(new ReportUserDto(27,30,1));
+        reportUserDtoList.add(new ReportUserDto(28,27,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
 
         try {
             for (ReportUserDto reportUserDto : reportUserDtoList) {
                 reportUserService.register(reportUserDto);
             }
-            Assertions.assertEquals(reportUserService.ReportUserByReporterId(17).size(),3);
+            Assertions.assertEquals(reportUserService.ReportUserByReporterId(27).size(),3);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -45,17 +51,17 @@ class ReportUserServiceTest {
     @Test
     void reportUserByTargetId() {
         List<ReportUserDto> reportUserDtoList = new ArrayList<>();
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
-        reportUserDtoList.add(new ReportUserDto(19,12,1));
-        reportUserDtoList.add(new ReportUserDto(17,20,1));
-        reportUserDtoList.add(new ReportUserDto(18,17,1));
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
+        reportUserDtoList.add(new ReportUserDto(29,12,1));
+        reportUserDtoList.add(new ReportUserDto(27,30,1));
+        reportUserDtoList.add(new ReportUserDto(28,27,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
 
         try {
             for (ReportUserDto reportUserDto : reportUserDtoList) {
                 reportUserService.register(reportUserDto);
             }
-            Assertions.assertEquals(reportUserService.ReportUserByTargetId(18).size(),2);
+            Assertions.assertEquals(reportUserService.ReportUserByTargetId(28).size(),2);
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -63,11 +69,11 @@ class ReportUserServiceTest {
     @Test
     void reportUserByDoYn() {
         List<ReportUserDto> reportUserDtoList = new ArrayList<>();
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
-        reportUserDtoList.add(new ReportUserDto(19,12,1));
-        reportUserDtoList.add(new ReportUserDto(17,20,1));
-        reportUserDtoList.add(new ReportUserDto(18,17,1));
-        reportUserDtoList.add(new ReportUserDto(17,18,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
+        reportUserDtoList.add(new ReportUserDto(29,12,1));
+        reportUserDtoList.add(new ReportUserDto(27,30,1));
+        reportUserDtoList.add(new ReportUserDto(28,27,1));
+        reportUserDtoList.add(new ReportUserDto(27,28,1));
         int id = 0;
         try {
             for (ReportUserDto reportUserDto : reportUserDtoList) {
@@ -83,7 +89,7 @@ class ReportUserServiceTest {
     }
     @Test
     void register() {
-        ReportUserDto reportUserDto = new ReportUserDto(17,18,1);
+        ReportUserDto reportUserDto = new ReportUserDto(27,28,1);
         try {
             int id =  reportUserService.register(reportUserDto);
             ReportUserDto reportUserDto2= reportUserService.find(id);
@@ -95,7 +101,7 @@ class ReportUserServiceTest {
 
     @Test
     void update() {
-        ReportUserDto reportUserDto = new ReportUserDto(17,18,1);
+        ReportUserDto reportUserDto = new ReportUserDto(27,28,1);
         try {
             int id =  reportUserService.register(reportUserDto);
             reportUserDto = reportUserService.find(id);
