@@ -30,7 +30,7 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public List<NoticeListDto> NoticeList() throws Exception {
+    public List<NoticeListDto> noticeList() throws Exception {
         List<Notice> NoticeList = noticeRepository.findAll();
         List<NoticeListDto> noticeListDtoList = new ArrayList<>();
         for (Notice notice : NoticeList) {

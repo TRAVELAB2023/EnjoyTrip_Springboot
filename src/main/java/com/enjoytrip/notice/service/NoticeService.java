@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface NoticeService {
     void register(NoticeRegisterDto noticeDto) throws Exception;
-    List<NoticeListDto> NoticeList() throws Exception;
+    List<NoticeListDto> noticeList() throws Exception;
     NoticeDetailDto detail(int noticeId) throws Exception;
+
 }
