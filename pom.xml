@@ -48,6 +48,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
@@ -64,8 +67,6 @@
 			<artifactId>querydsl-apt</artifactId>
 			<version>5.0.0</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>

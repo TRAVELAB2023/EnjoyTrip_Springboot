@@ -2,6 +2,7 @@ package com.enjoytrip.report_user.service;
 
 import com.enjoytrip.model.ReportUser;
 import com.enjoytrip.report_user.dto.ReportUserDto;
+import com.enjoytrip.report_user.dto.ReportUserRegisterDto;
 import com.enjoytrip.report_user.repository.ReportUserRepository;
 
 import java.sql.SQLException;
@@ -30,30 +31,30 @@ public class ReportUserServiceImpl implements ReportUserService {
     }
 
     @Override
-    public List<ReportUserDto> ReportUserByReporterId(int reporterId) throws SQLException {
+    public List<ReportUserDto> findReportUserByReporterId(int reporterId) throws SQLException {
         List<ReportUser> reportUsers = reportUserRepository.findReportUsersByReporterMemberId(reporterId);
         return convertModelListToDtoList(reportUsers);
     }
 
 
     @Override
-    public List<ReportUserDto> ReportUserByTargetId(int targetId) throws SQLException {
+    public List<ReportUserDto> findReportUserByTargetId(int targetId) throws SQLException {
         List<ReportUser> reportUsers = reportUserRepository.findReportUsersByTargetMemberId(targetId);
         return convertModelListToDtoList(reportUsers);
     }
 
     @Override
-    public List<ReportUserDto> ReportUserByDoYn(boolean doYn) throws SQLException {
+    public List<ReportUserDto> findReportUserByDoYn(boolean doYn) throws SQLException {
         List<ReportUser> reportUsers = reportUserRepository.findReportUsersByDoYn(doYn);
         return convertModelListToDtoList(reportUsers);
     }
 
     @Override
-    public int register(ReportUserDto reportUserDto) throws SQLException {
+    public int register(ReportUserRegisterDto reportUserRegisterDto) throws SQLException {
         ReportUser reportUser = ReportUser.builder()
-                .reporterMemberId(reportUserDto.getReporterMemberId())
-                .targetMemberId(reportUserDto.getTargetMemberId())
-                .reportType(reportUserDto.getReportType()).
+                .reporterMemberId(reportUserRegisterDto.getReporterId())
+                .targetMemberId(reportUserRegisterDto.getTargetId())
+                .reportType(reportUserRegisterDto.getReportType()).
                 build();
         return reportUserRepository.save(reportUser).getReportId();
     }

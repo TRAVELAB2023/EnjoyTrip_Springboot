@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class ReportUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "report_id")
     int reportId;
 
     @Column(name = "reporter_member_id")

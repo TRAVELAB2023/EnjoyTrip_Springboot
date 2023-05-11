@@ -1,25 +1,41 @@
 package com.enjoytrip.members.dto;
 
-import com.enjoytrip.model.Member;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 public class RegisterDto {
+
+    @Email
     private String email;
+
+    @NotBlank
     private String nickname;
-    private boolean marketingAgreement;
+    private boolean marketing;
     private String role;
+    @NotBlank
     private String password;
 
 
 
-    public RegisterDto(String email, String nickname, boolean marketingAgreement, String password) {
+    public RegisterDto(String email, String nickname, boolean marketing, String password) {
         this.email = email;
         this.nickname = nickname;
-        this.marketingAgreement = marketingAgreement;
+        this.marketing = marketing;
         this.role = "user";
         this.password=password;
+    }
+
+    @Override
+    public String toString() {
+        return "RegisterDto{" +
+                "email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", marketing=" + marketing +
+                ", role='" + role + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
