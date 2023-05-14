@@ -6,6 +6,9 @@ import com.enjoytrip.member_like.service.MemberLikeServiceImpl;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.members.service.MemberService;
 import com.enjoytrip.members.service.MemberServiceImpl;
+import com.enjoytrip.notice.repository.NoticeRepository;
+import com.enjoytrip.notice.service.NoticeService;
+import com.enjoytrip.notice.service.NoticeServiceImpl;
 import com.enjoytrip.report_user.repository.ReportUserRepository;
 import com.enjoytrip.report_user.service.ReportUserService;
 import com.enjoytrip.report_user.service.ReportUserServiceImpl;
@@ -18,11 +21,13 @@ public class SpringConfig {
     private final MemberLikeRepository memberLikeRepository;
 
     private final ReportUserRepository reportUserRepository;
+    private final NoticeRepository noticeRepository;
 
-    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository) {
+    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository) {
         this.memberRepository = memberRepository;
         this.memberLikeRepository = memberLikeRepository;
         this.reportUserRepository = reportUserRepository;
+        this.noticeRepository = noticeRepository;
     }
 
     @Bean
@@ -38,6 +43,11 @@ public class SpringConfig {
     @Bean
     ReportUserService reportUserService() {
         return new ReportUserServiceImpl(reportUserRepository);
+    }
+
+    @Bean
+    NoticeService noticeService(){
+        return new NoticeServiceImpl(noticeRepository,memberRepository);
     }
 
 }
