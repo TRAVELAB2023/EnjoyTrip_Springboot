@@ -21,11 +21,6 @@ public class ReportUserDto {
         this.deleteYn = reportUser.isDeleteYn();
     }
 
-    public ReportUserDto(int reporterMemberId, int targetMemberId, int reportType) {
-        this.reporterMemberId = reporterMemberId;
-        this.targetMemberId = targetMemberId;
-        this.reportType = reportType;
-    }
 
     public void modifyDoYn(boolean doYn) {
         this.doYn = doYn;
