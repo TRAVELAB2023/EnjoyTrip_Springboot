@@ -88,10 +88,12 @@ public class PlanIntegrationTest {
     @Test
     @DisplayName("없는 게획 삭제(예외 처리)")
     public void deletePlanExceptionTest() throws Exception {
-        org.assertj.core.api.Assertions.assertThatThrownBy(()->{
+
             mockMvc.perform(delete("/plan/1111111")
-                    .session(mockHttpSession));
-        }).hasCause(new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
+                    .session(mockHttpSession))
+                    .andExpect((result)->{
+                        Assertions.assertTrue(result.getResolvedException().getClass().isAssignableFrom(PlanException.class));
+                    });
 
     }
     @Test
@@ -116,11 +118,13 @@ public class PlanIntegrationTest {
 
     @Test
     @DisplayName("존재하지 않는 계획에 포함된 관광지 조회(예외 처리)")
-    public void getPlanExceptionTest(){
-        org.assertj.core.api.Assertions.assertThatThrownBy(()->{
+    public void getPlanExceptionTest() throws Exception {
+
             mockMvc.perform(get("/plan/1111111")
-                    .session(mockHttpSession));
-        }).hasCause(new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
+                    .session(mockHttpSession))
+                    .andExpect((result)->{
+                        Assertions.assertTrue(result.getResolvedException().getClass().isAssignableFrom(PlanException.class));
+                    });
     }
     @Test
     @DisplayName("나의 게획 조회")
@@ -180,6 +184,7 @@ public class PlanIntegrationTest {
                         .content(json))
                         .andExpect((result ->{
                             Assertions.assertTrue(result.getResolvedException().getClass().isAssignableFrom(MethodArgumentNotValidException.class));
-                        }));
+                        }))
+                        .andExpect((content().string("이름의 길이는 최소 3글자, 최대 20글자입니다.")));
     }
 }
