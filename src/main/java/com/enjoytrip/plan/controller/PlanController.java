@@ -2,7 +2,6 @@ package com.enjoytrip.plan.controller;
 
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Attraction;
-import com.enjoytrip.model.Plan;
 import com.enjoytrip.plan.dto.PlanDto;
 import com.enjoytrip.plan.dto.PlanRequestDto;
 import com.enjoytrip.plan.service.PlanService;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.Response;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,7 +39,7 @@ public class PlanController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PlanDto>> getPlanList(HttpSession session, @RequestParam @PageableDefault Pageable pageable){
+    public ResponseEntity<List<PlanDto>> getPlanList(HttpSession session, @PageableDefault Pageable pageable){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         List<PlanDto> list=planService.findByMemberId(sessionDto.getMemberId(),pageable);
         return new ResponseEntity<List<PlanDto>>(list,HttpStatus.OK);
@@ -48,7 +47,7 @@ public class PlanController {
 
 
     @PostMapping("")
-    public ResponseEntity<Void> postPlan(HttpSession session, @RequestBody PlanRequestDto planRequestDto){
+    public ResponseEntity<Void> postPlan(HttpSession session,  @RequestBody @Valid PlanRequestDto planRequestDto){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         planService.savePlan(sessionDto.getMemberId(),planRequestDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
