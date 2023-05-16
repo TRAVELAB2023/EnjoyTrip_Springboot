@@ -1,5 +1,7 @@
 package com.enjoytrip.exception;
 
+import com.enjoytrip.exception.custom_exception.MemberException;
+import com.enjoytrip.exception.custom_exception.RoleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +17,12 @@ public class ExceptionAdvise {
     }
 
     @ExceptionHandler(MemberException.class)
-    public ResponseEntity<String> MemberExceptionHandle(MemberException memberException){
+    public ResponseEntity<String> MemberExceptionHandle(MemberException memberException) {
+        return new ResponseEntity(memberException.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(RoleException.class)
+    public ResponseEntity<String> RoleExceptionHandle(MemberException memberException) {
         return new ResponseEntity(memberException.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 

@@ -1,7 +1,7 @@
 package com.enjoytrip.plan;
 
-import com.enjoytrip.exception.PlanException;
-import com.enjoytrip.exception.PlanExceptionMessage;
+import com.enjoytrip.exception.custom_exception.PlanException;
+import com.enjoytrip.exception.message.PlanExceptionMessage;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.model.Member;
@@ -19,8 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Optional;
 

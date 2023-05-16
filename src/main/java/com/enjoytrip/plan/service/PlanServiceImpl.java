@@ -1,7 +1,7 @@
 package com.enjoytrip.plan.service;
 
-import com.enjoytrip.exception.PlanException;
-import com.enjoytrip.exception.PlanExceptionMessage;
+import com.enjoytrip.exception.custom_exception.PlanException;
+import com.enjoytrip.exception.message.PlanExceptionMessage;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.model.Plan;
 import com.enjoytrip.model.PlanDetail;

@@ -1,4 +1,6 @@
-package com.enjoytrip.exception;
+package com.enjoytrip.exception.custom_exception;
+
+import com.enjoytrip.exception.message.PlanExceptionMessage;
 
 public class PlanException extends RuntimeException{
 
