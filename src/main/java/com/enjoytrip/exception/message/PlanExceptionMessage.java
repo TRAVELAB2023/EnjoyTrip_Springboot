@@ -1,4 +1,4 @@
-package com.enjoytrip.exception;
+package com.enjoytrip.exception.message;
 
 public enum PlanExceptionMessage {
     DATA_NOT_FOUND("계획을 찾을 수 없습니다."),

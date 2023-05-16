@@ -1,7 +1,7 @@
 package com.enjoytrip.members.service;
 
-import com.enjoytrip.exception.MemberException;
-import com.enjoytrip.exception.MemberExceptionMessage;
+import com.enjoytrip.exception.custom_exception.MemberException;
+import com.enjoytrip.exception.message.MemberExceptionMessage;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void join(RegisterDto registerDto) throws SQLException {
+    public int join(RegisterDto registerDto) throws SQLException {
         if(isDuplicatedEmail(registerDto.getEmail())&&isDuplicatedNickname(registerDto.getNickname())){
             throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL_AND_NICKNAME);
         } else if (isDuplicatedEmail(registerDto.getEmail())) {
@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService {
                 .role(registerDto.getRole())
                 .build();
 
-        memberRepository.save(member);
+        return memberRepository.save(member).getMemberId();
     }
 
     @Override

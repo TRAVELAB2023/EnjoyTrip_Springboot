@@ -1,4 +1,4 @@
-package com.enjoytrip.exception;
+package com.enjoytrip.exception.message;
 
 public enum RoleExceptionMessage {
     NO_AUTH("권한이 없습니다.");

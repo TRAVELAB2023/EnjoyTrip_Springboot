@@ -1,7 +1,9 @@
 package com.enjoytrip.notice.service;
 
-import com.enjoytrip.exception.RoleException;
-import com.enjoytrip.exception.RoleExceptionMessage;
+import com.enjoytrip.exception.custom_exception.RoleException;
+import com.enjoytrip.exception.custom_exception.WrongPageException;
+import com.enjoytrip.exception.message.RoleExceptionMessage;
+import com.enjoytrip.exception.message.WrongPageExceptionMessage;
 import com.enjoytrip.members.mapper.MemberIdMapping;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
@@ -11,9 +13,7 @@ import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
 import com.enjoytrip.notice.repository.NoticeRepository;
 import com.enjoytrip.notice.util.SearchCondition;
-import io.swagger.models.auth.In;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +88,9 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public NoticeDetailDto detail(int noticeId) throws Exception {
         Notice notice = noticeRepository.findByNoticeId(noticeId);
+        if (notice == null) {
+            throw new WrongPageException(WrongPageExceptionMessage.WRONG_PAGE);
+        }
         return new NoticeDetailDto(notice);
     }
 

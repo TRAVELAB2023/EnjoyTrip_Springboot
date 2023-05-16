@@ -4,6 +4,7 @@ import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
+import com.enjoytrip.notice.dto.NoticeSearchDto;
 import com.enjoytrip.notice.service.NoticeService;
 import com.enjoytrip.notice.util.SearchCondition;
 import org.springframework.data.domain.PageRequest;
@@ -31,21 +32,18 @@ public class NoticeController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<NoticeListDto>> list(@RequestParam Map<String, String> map) throws Exception{
-        int searchType = Integer.parseInt(map.get("type"));
-        String searchString = map.get("searchString");
-        SearchCondition searchCondition = new SearchCondition(searchString, searchType);
-        int startIndex= Integer.parseInt(map.get("start"));
-        int size = Integer.parseInt(map.get("size"));
+    public ResponseEntity<List<NoticeListDto>> list(@RequestBody NoticeSearchDto noticeSearchDto) throws Exception{
+        SearchCondition searchCondition = new SearchCondition(noticeSearchDto.getSearchString(), noticeSearchDto.getSearchType());
 
-        List<NoticeListDto> list = noticeService.noticeList(searchCondition, PageRequest.of(startIndex, size));
+        List<NoticeListDto> list = noticeService.noticeList(searchCondition, PageRequest.of(noticeSearchDto.getStart(), noticeSearchDto.getSize()));
+
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity register(@RequestParam NoticeRegisterDto noticeRegisterDto) throws Exception {
-        noticeService.register(noticeRegisterDto);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity register(@RequestBody NoticeRegisterDto noticeRegisterDto) throws Exception {
+        int noticeId= noticeService.register(noticeRegisterDto);
+        return new ResponseEntity(noticeId,HttpStatus.OK);
     }
 
     @DeleteMapping("/{notice-id}")

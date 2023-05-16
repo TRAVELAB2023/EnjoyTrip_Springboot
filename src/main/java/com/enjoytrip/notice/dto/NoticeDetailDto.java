@@ -12,7 +12,9 @@ public class NoticeDetailDto {
     LocalDateTime registerTime;
     int memberId;
     String content;
+    public NoticeDetailDto(){
 
+    }
     public NoticeDetailDto(Notice notice) {
         this.noticeId = notice.getNoticeId();
         this.title = notice.getTitle();
@@ -20,4 +22,6 @@ public class NoticeDetailDto {
         this.memberId = notice.getMemberId();
         this.content = notice.getContent();
     }
+
+
 }
