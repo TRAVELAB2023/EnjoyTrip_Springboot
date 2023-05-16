@@ -1,5 +1,7 @@
 package com.enjoytrip.members.service;
 
+import com.enjoytrip.exception.MemberException;
+import com.enjoytrip.exception.MemberExceptionMessage;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
@@ -22,25 +24,34 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public SessionDto login(LoginDto loginDto) throws SQLException {
-        SessionDto sessionDto = new SessionDto(memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false));
+    public SessionDto login(LoginDto loginDto) throws Exception {
+        Member member = memberRepository.findMemberByEmailAndPasswordAndDelYn(loginDto.getEmail(), loginDto.getPassword(), false);
+        if (member == null) {
+            throw new MemberException(MemberExceptionMessage.WRONG_ID_OR_PASSWORD);
+        }
+        SessionDto sessionDto = new SessionDto(member);
+
         return sessionDto;
     }
 
     @Override
-    public int join(RegisterDto registerDto) throws SQLException {
-        if(isDuplicatedEmail(registerDto.getEmail())||isDuplicatedNickname(registerDto.getNickname())){
-            throw new SQLException();
+    public void join(RegisterDto registerDto) throws SQLException {
+        if(isDuplicatedEmail(registerDto.getEmail())&&isDuplicatedNickname(registerDto.getNickname())){
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL_AND_NICKNAME);
+        } else if (isDuplicatedEmail(registerDto.getEmail())) {
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL);
+        } else if (isDuplicatedNickname(registerDto.getNickname())) {
+            throw new MemberException(MemberExceptionMessage.DUPLICATED_NICKNAME);
         }
         Member member = Member.builder()
                 .email(registerDto.getEmail())
                 .password(registerDto.getPassword())
-                .marketingAgreement(registerDto.isMarketingAgreement())
+                .marketingAgreement(registerDto.isMarketing())
                 .nickname(registerDto.getNickname())
                 .role(registerDto.getRole())
                 .build();
 
-        return memberRepository.save(member).getMemberId();
+        memberRepository.save(member);
     }
 
     @Override
@@ -68,6 +79,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isDuplicatedEmail(String email) throws SQLException {
         if (memberRepository.countMembersByEmail(email) == 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isWritePassword(LoginDto loginDto) throws Exception {
+        if (login(loginDto) != null) {
             return true;
         }
 
