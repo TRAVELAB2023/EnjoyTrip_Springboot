@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class PlanIntegrationTest {
 
 
@@ -108,7 +110,8 @@ public class PlanIntegrationTest {
         plan.add(PlanDetail.builder().contentId(125405).planId(plan.getPlanId()).build());
         plan.add(PlanDetail.builder().contentId(125406).planId(plan.getPlanId()).build());
         planRepository.save(plan);
-        MvcResult result=mockMvc.perform(get("/plan/"+plan.getPlanId()))
+        MvcResult result=mockMvc.perform(get("/plan/"+plan.getPlanId())
+                                .session(mockHttpSession))
                                 .andExpect(status().isOk())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andReturn();
