@@ -1,6 +1,5 @@
 package com.enjoytrip.notice.controller;
 
-import com.enjoytrip.exception.custom_exception.RoleException;
 import com.enjoytrip.exception.custom_exception.WrongPageException;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
@@ -9,8 +8,6 @@ import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
 import com.enjoytrip.notice.dto.NoticeSearchDto;
 import com.enjoytrip.notice.service.NoticeService;
-import com.enjoytrip.report_user.service.ReportUserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Assertions;
@@ -29,11 +26,9 @@ import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -51,18 +46,17 @@ class NoticeControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    static int n = 0;
+    static int adminId = 0;
     @BeforeEach
     void before() throws SQLException {
         RegisterDto registerDto = new RegisterDto("test@test","test",true,"test");
         registerDto.grantAdmin();
-        n= memberService.join(registerDto);
-
+        adminId = memberService.join(registerDto);
     }
 
     @Test
     void detail() throws Exception {
-        NoticeRegisterDto noticeRegisterDto = new NoticeRegisterDto("test", n, "test");
+        NoticeRegisterDto noticeRegisterDto = new NoticeRegisterDto("test", adminId, "test");
         int noticeId = noticeService.register(noticeRegisterDto);
 
         MvcResult mvcResult = mockMvc.perform(get("/notice/"+noticeId)
@@ -71,13 +65,12 @@ class NoticeControllerTest {
 
         NoticeDetailDto noticeDetailDto = objectMapper.registerModule(new JavaTimeModule()).readValue(mvcResult.getResponse().getContentAsString(),NoticeDetailDto.class);
         Assertions.assertEquals(noticeDetailDto.getContent(),noticeRegisterDto.getContent());
-
     }
 
     @Test
     void list() throws Exception {
         for (int i = 1; i < 100; i++) {
-            noticeService.register(new NoticeRegisterDto(i+"", n, i+""));
+            noticeService.register(new NoticeRegisterDto(i+"", adminId, i+""));
         }
         NoticeSearchDto noticeSearchDto = new NoticeSearchDto("",0,0,10);
 
@@ -87,14 +80,11 @@ class NoticeControllerTest {
         ).andExpect(status().isOk()).andReturn();
         List<NoticeListDto> list =objectMapper.registerModule(new JavaTimeModule()).readValue(mvcResult.getResponse().getContentAsString(),List.class);
         Assertions.assertEquals(list.size(),noticeSearchDto.getSize());
-
-
-
     }
 
     @Test
     void register() throws Exception {
-        NoticeRegisterDto noticeRegisterDto = new NoticeRegisterDto("test", n, "test");
+        NoticeRegisterDto noticeRegisterDto = new NoticeRegisterDto("test", adminId, "test");
         int noticeId = 0;
         MvcResult mvcResult = mockMvc.perform(post("/notice")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,11 +96,10 @@ class NoticeControllerTest {
 
     @Test
     void delete() throws Exception {
-        int id = noticeService.register(new NoticeRegisterDto("test", n, "test"));
+        int id = noticeService.register(new NoticeRegisterDto("test", adminId, "test"));
         mockMvc.perform(MockMvcRequestBuilders.delete("/notice/"+id)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
         Assertions.assertThrows(WrongPageException.class, ()-> noticeService.detail(id));
-
     }
 }
