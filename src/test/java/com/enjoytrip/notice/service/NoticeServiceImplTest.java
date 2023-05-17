@@ -4,7 +4,7 @@ import com.enjoytrip.exception.custom_exception.RoleException;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
-import com.enjoytrip.notice.util.SearchCondition;
+import com.enjoytrip.util.SearchCondition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

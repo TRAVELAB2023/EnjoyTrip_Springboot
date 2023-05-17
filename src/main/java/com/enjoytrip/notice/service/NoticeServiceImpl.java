@@ -12,7 +12,7 @@ import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
 import com.enjoytrip.notice.repository.NoticeRepository;
-import com.enjoytrip.notice.util.SearchCondition;
+import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.enjoytrip.notice.util;
+package com.enjoytrip.util;
 
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;

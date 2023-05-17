@@ -1,19 +1,17 @@
 package com.enjoytrip.notice.controller;
 
-import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
 import com.enjoytrip.notice.dto.NoticeSearchDto;
 import com.enjoytrip.notice.service.NoticeService;
-import com.enjoytrip.notice.util.SearchCondition;
+import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/notice")
