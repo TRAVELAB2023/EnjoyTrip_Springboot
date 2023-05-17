@@ -3,6 +3,7 @@ package com.enjoytrip;
 import com.enjoytrip.board.repository.BoardRepository;
 import com.enjoytrip.board.repository.CommentBoardRepository;
 import com.enjoytrip.board.repository.ImageRepository;
+import com.enjoytrip.board.repository.ImageUploadRepository;
 import com.enjoytrip.board.service.BoardService;
 import com.enjoytrip.board.service.BoardServiceImpl;
 import com.enjoytrip.member_like.repository.MemberLikeRepository;
@@ -29,7 +30,8 @@ public class SpringConfig {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final CommentBoardRepository commentBoardRepository;
-    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository) {
+    private final ImageUploadRepository imageUploadRepository;
+    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository, ImageUploadRepository imageUploadRepository) {
         this.memberRepository = memberRepository;
         this.memberLikeRepository = memberLikeRepository;
         this.reportUserRepository = reportUserRepository;
@@ -37,6 +39,7 @@ public class SpringConfig {
         this.boardRepository = boardRepository;
         this.imageRepository = imageRepository;
         this.commentBoardRepository = commentBoardRepository;
+        this.imageUploadRepository = imageUploadRepository;
     }
 
     @Bean
@@ -61,7 +64,7 @@ public class SpringConfig {
 
     @Bean
     BoardService boardService() {
-        return new BoardServiceImpl(boardRepository, imageRepository, commentBoardRepository, memberRepository);
+        return new BoardServiceImpl(boardRepository, imageRepository, commentBoardRepository, memberRepository, imageUploadRepository);
     }
 
 }

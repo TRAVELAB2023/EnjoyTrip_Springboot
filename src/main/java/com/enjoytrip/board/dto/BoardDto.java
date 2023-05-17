@@ -1,15 +1,19 @@
 package com.enjoytrip.board.dto;
 
 import com.enjoytrip.model.Board;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 public class BoardDto {
     int boardId;
     String title;
     int hit;
     String content;
     String writerNickname;
+    LocalDateTime registerTime;
 
     int writerId;
     private List<CommentBoardDto> commentBoardList;
@@ -24,6 +28,7 @@ public class BoardDto {
         this.commentBoardList = commentBoards;
         this.imageList = images;
         this.writerNickname = memberNickname;
+        this.registerTime = board.getRegisterTime();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.enjoytrip.board.dto;
 
 import com.enjoytrip.model.Image;
+import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
+@Getter
 public class ImageDto {
     String extension;
 

@@ -4,6 +4,7 @@ import com.enjoytrip.board.dto.*;
 import com.enjoytrip.board.repository.BoardRepository;
 import com.enjoytrip.board.repository.CommentBoardRepository;
 import com.enjoytrip.board.repository.ImageRepository;
+import com.enjoytrip.board.repository.ImageUploadRepository;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Board;
 import com.enjoytrip.model.CommentBoard;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,13 +28,14 @@ public class BoardServiceImpl implements BoardService {
     private final ImageRepository imageRepository;
     private final CommentBoardRepository commentBoardRepository;
     private final MemberRepository memberRepository;
-    private final String path = "src/main/resources/file/image/";
+    private final ImageUploadRepository imageUploadRepository;
 
-    public BoardServiceImpl(BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository, MemberRepository memberRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository, MemberRepository memberRepository, ImageUploadRepository imageUploadRepository) {
         this.boardRepository = boardRepository;
         this.imageRepository = imageRepository;
         this.commentBoardRepository = commentBoardRepository;
         this.memberRepository = memberRepository;
+        this.imageUploadRepository = imageUploadRepository;
     }
 
 
@@ -45,21 +49,18 @@ public class BoardServiceImpl implements BoardService {
         int boardId = boardRepository.save(board).getBoardId();
         List<Image> imageModels = new ArrayList<>();
         for (MultipartFile image : images) {
-            String fileName = image.getOriginalFilename();
-            String extension = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-
-            UUID uuid = UUID.randomUUID();
-            String newFileName = uuid.toString() + extension;
-            image.transferTo(new File(path + newFileName));
+            String newFileName = imageUploadRepository.uploadFile(image, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")), image.getOriginalFilename());
             imageModels.add(Image.builder()
                     .boardId(boardId)
                     .extension(newFileName)
+                    .originalExtension(image.getOriginalFilename())
                     .build());
         }
         imageRepository.saveAll(imageModels);
 
         return boardId;
     }
+
 
     @Override
     public BoardDto detail(int boardId) {
@@ -68,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findByBoardId(boardId);
         String writerNickname = memberRepository.findByMemberId(board.getMemberId()).getNickname();
 
-        return new BoardDto(board,commentBoardDtoList,imageDtoList,writerNickname);
+        return new BoardDto(board, commentBoardDtoList, imageDtoList, writerNickname);
     }
 
     private List<ImageDto> getImageDtoList(int boardId) {
@@ -93,6 +94,31 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<BoardListDto> list(SearchCondition searchCondition, Pageable pageable) {
+        List<Board> boards = getBoardList(searchCondition, pageable);
+        List<BoardListDto> boardListDtoList = new ArrayList<>();
+        for (Board board : boards) {
+            boardListDtoList.add(new BoardListDto(board, memberRepository.findByMemberId(board.getMemberId()).getNickname()));
+        }
+
+
+        return boardListDtoList;
+    }
+
+    private List<Board> getBoardList(SearchCondition searchCondition, Pageable pageable) {
+        if (searchCondition.getSearchType() == 1) {
+            return boardRepository.findByTitleContainsOrderByRegisterTimeDesc(searchCondition.getSearchString(), pageable);
+        } else if (searchCondition.getSearchType() == 2) {
+            return boardRepository.findByContentContainsOrderByRegisterTimeDesc(searchCondition.getSearchString(), pageable);
+        } else if (searchCondition.getSearchType() == 3) {
+            return boardRepository.findByTitleContainsOrContentContainsOrderByRegisterTimeDesc(searchCondition.getSearchString(), searchCondition.getSearchString(), pageable);
+        } else if (searchCondition.getSearchType() == 4) {
+            List<Integer> memberIdList = getMemberIdListByNicknameLike(searchCondition.getSearchString());
+            return boardRepository.findByMemberIdInOrderByRegisterTimeDesc(memberIdList, pageable);
+        }
+        return boardRepository.findAllByOrderByRegisterTimeDesc(pageable);
+    }
+
+    private List<Integer> getMemberIdListByNicknameLike(String searchString) {
         return null;
     }
 
