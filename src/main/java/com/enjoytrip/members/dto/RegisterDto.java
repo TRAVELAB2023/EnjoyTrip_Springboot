@@ -28,6 +28,13 @@ public class RegisterDto {
         this.password=password;
     }
 
+    public void grantAdmin() {
+        this.role = "admin";
+    }
+    public void revokeAdmin(){
+        this.role = "user";
+    }
+
     @Override
     public String toString() {
         return "RegisterDto{" +
