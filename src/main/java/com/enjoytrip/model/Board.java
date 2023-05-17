@@ -25,8 +25,10 @@ public class Board extends BaseTimeEntity {
     String content;
     @Column(name="del_yn")
     boolean delYn;
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", updatable = false)
     private List<CommentBoard> commentBoardList;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", updatable = false)
+    private List<Image> imageList;
 }
