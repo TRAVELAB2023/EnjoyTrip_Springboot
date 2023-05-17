@@ -33,8 +33,9 @@ public class PlanController {
     }
 
     @GetMapping("/{planId}")
-    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId){
-        List<Attraction> list=planService.findByPlanId(planId);
+    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId,HttpSession session){
+        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
+        List<Attraction> list=planService.findByPlanId(planId,sessionDto.getMemberId());
         return new ResponseEntity<List<Attraction>>(list,HttpStatus.OK);
     }
 

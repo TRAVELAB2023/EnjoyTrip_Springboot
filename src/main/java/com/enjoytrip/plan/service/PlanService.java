@@ -20,5 +20,5 @@ public interface PlanService {
     public void deletePlan(int planId,int memberId);
 
     // 특정 플랜의 계획되 관광지를 조회한다.
-    public List<Attraction> findByPlanId(int planId);
+    public List<Attraction> findByPlanId(int planId,int memberId);
 }

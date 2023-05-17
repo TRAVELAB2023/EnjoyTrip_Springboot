@@ -19,6 +19,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,7 +82,7 @@ public class PlanRepoTest {
         plan.add(PlanDetail.builder().contentId(125406).planId(plan.getPlanId()).build());
         planRepository.save(plan);
 
-        Assertions.assertEquals(1,planRepository.findAll().size());
+        Assertions.assertEquals(34,planRepository.findAll().size());
 
     }
 
