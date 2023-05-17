@@ -1,7 +1,8 @@
 package com.enjoytrip.plan;
 
-import com.enjoytrip.exception.PlanException;
-import com.enjoytrip.exception.PlanExceptionMessage;
+
+import com.enjoytrip.exception.custom_exception.PlanException;
+import com.enjoytrip.exception.message.PlanExceptionMessage;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Attraction;

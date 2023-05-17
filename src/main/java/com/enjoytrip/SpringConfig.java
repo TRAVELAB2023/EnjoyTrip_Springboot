@@ -1,5 +1,9 @@
 package com.enjoytrip;
 
+import com.enjoytrip.board.repository.BoardRepository;
+import com.enjoytrip.board.repository.ImageRepository;
+import com.enjoytrip.board.service.BoardService;
+import com.enjoytrip.board.service.BoardServiceImpl;
 import com.enjoytrip.member_like.repository.MemberLikeRepository;
 import com.enjoytrip.member_like.service.MemberLikeService;
 import com.enjoytrip.member_like.service.MemberLikeServiceImpl;
@@ -21,12 +25,15 @@ public class SpringConfig {
     private final MemberLikeRepository memberLikeRepository;
     private final ReportUserRepository reportUserRepository;
     private final NoticeRepository noticeRepository;
-
-    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository) {
+    private final BoardRepository boardRepository;
+    private final ImageRepository imageRepository;
+    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository) {
         this.memberRepository = memberRepository;
         this.memberLikeRepository = memberLikeRepository;
         this.reportUserRepository = reportUserRepository;
         this.noticeRepository = noticeRepository;
+        this.boardRepository = boardRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Bean
@@ -47,6 +54,11 @@ public class SpringConfig {
     @Bean
     NoticeService noticeService(){
         return new NoticeServiceImpl(noticeRepository,memberRepository);
+    }
+
+    @Bean
+    BoardService boardService() {
+        return new BoardServiceImpl(boardRepository, imageRepository);
     }
 
 }
