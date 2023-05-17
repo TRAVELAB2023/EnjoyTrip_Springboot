@@ -1,11 +1,12 @@
 package com.enjoytrip.board.service;
 
-import com.enjoytrip.board.dto.BoardDto;
-import com.enjoytrip.board.dto.BoardListDto;
-import com.enjoytrip.board.dto.BoardRegisterDto;
+import com.enjoytrip.board.dto.*;
 import com.enjoytrip.board.repository.BoardRepository;
+import com.enjoytrip.board.repository.CommentBoardRepository;
 import com.enjoytrip.board.repository.ImageRepository;
+import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Board;
+import com.enjoytrip.model.CommentBoard;
 import com.enjoytrip.model.Image;
 import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +23,15 @@ import java.util.UUID;
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
+    private final CommentBoardRepository commentBoardRepository;
+    private final MemberRepository memberRepository;
     private final String path = "src/main/resources/file/image/";
 
-    public BoardServiceImpl(BoardRepository boardRepository, ImageRepository imageRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository, MemberRepository memberRepository) {
         this.boardRepository = boardRepository;
         this.imageRepository = imageRepository;
+        this.commentBoardRepository = commentBoardRepository;
+        this.memberRepository = memberRepository;
     }
 
 
@@ -58,7 +63,32 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDto detail(int boardId) {
-        return null;
+        List<CommentBoardDto> commentBoardDtoList = getCommentBoardDtoList(boardId);
+        List<ImageDto> imageDtoList = getImageDtoList(boardId);
+        Board board = boardRepository.findByBoardId(boardId);
+        String writerNickname = memberRepository.findByMemberId(board.getMemberId()).getNickname();
+
+        return new BoardDto(board,commentBoardDtoList,imageDtoList,writerNickname);
+    }
+
+    private List<ImageDto> getImageDtoList(int boardId) {
+        List<Image> Images = imageRepository.findByBoardId(boardId);
+        List<ImageDto> imageDtoList = new ArrayList<>();
+        for (Image image : Images) {
+            imageDtoList.add(new ImageDto(image));
+        }
+        return imageDtoList;
+    }
+
+    private List<CommentBoardDto> getCommentBoardDtoList(int boardId) {
+        List<CommentBoard> commentBoards = commentBoardRepository.findByBoardId(boardId);
+        List<CommentBoardDto> commentBoardDtoList = new ArrayList<>();
+        for (CommentBoard commentBoard : commentBoards) {
+
+            commentBoardDtoList.add(new CommentBoardDto(commentBoard, memberRepository.findByMemberId(commentBoard.getMemberId()).getNickname()));
+        }
+
+        return commentBoardDtoList;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class CommentBoard extends BaseTimeEntity {
     @Column(name = "member_id")
     int memberId;
 
-    int rgruop;
+    int rgroup;
     @Column(name = "reply_depth")
     boolean replyDepth;
 

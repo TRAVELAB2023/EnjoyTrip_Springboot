@@ -1,5 +1,6 @@
 package com.enjoytrip.board.service;
 
+import com.enjoytrip.board.dto.BoardDto;
 import com.enjoytrip.board.dto.BoardRegisterDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
@@ -50,6 +51,13 @@ class BoardServiceImplTest {
     void register() throws IOException {
         BoardRegisterDto boardRegisterDto = new BoardRegisterDto("test",memberId,"test");
         boardService.register(boardRegisterDto, list);
+    }
 
+    @Test
+    void detail() throws IOException {
+        BoardRegisterDto boardRegisterDto = new BoardRegisterDto("test",memberId,"test");
+        int boardId= boardService.register(boardRegisterDto, list);
+        BoardDto boardDto = boardService.detail(boardId);
+        System.out.println(boardDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.enjoytrip;
 
 import com.enjoytrip.board.repository.BoardRepository;
+import com.enjoytrip.board.repository.CommentBoardRepository;
 import com.enjoytrip.board.repository.ImageRepository;
 import com.enjoytrip.board.service.BoardService;
 import com.enjoytrip.board.service.BoardServiceImpl;
@@ -27,13 +28,15 @@ public class SpringConfig {
     private final NoticeRepository noticeRepository;
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
-    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository) {
+    private final CommentBoardRepository commentBoardRepository;
+    public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository) {
         this.memberRepository = memberRepository;
         this.memberLikeRepository = memberLikeRepository;
         this.reportUserRepository = reportUserRepository;
         this.noticeRepository = noticeRepository;
         this.boardRepository = boardRepository;
         this.imageRepository = imageRepository;
+        this.commentBoardRepository = commentBoardRepository;
     }
 
     @Bean
@@ -58,7 +61,7 @@ public class SpringConfig {
 
     @Bean
     BoardService boardService() {
-        return new BoardServiceImpl(boardRepository, imageRepository);
+        return new BoardServiceImpl(boardRepository, imageRepository, commentBoardRepository, memberRepository);
     }
 
 }

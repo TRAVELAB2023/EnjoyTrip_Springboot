@@ -21,4 +21,6 @@ public class Image {
     String extension;
     @Column(name = "board_id")
     int boardId;
+    @Column(name="original_extension")
+    String originalExtension;
 }
