@@ -6,7 +6,6 @@ import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.fileupload.FileItem;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -33,33 +31,23 @@ class BoardServiceImplTest {
     MemberService memberService;
 
     int memberId = 0;
-    List<MultipartFile> list = new ArrayList<>();
 
     @BeforeEach
     void before() throws SQLException, IOException {
         memberId = memberService.join(new RegisterDto("test@test", "test", true, "test"));
-        File file = new File("src/test/image/img.png");
-        DiskFileItem diskFileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()),
-                false, file.getName(), (int) file.length(), file.getParentFile());
-        InputStream input = new FileInputStream(file);
-        OutputStream os = diskFileItem.getOutputStream();
-        IOUtils.copy(input, os);
-        MultipartFile uploadFile = new CommonsMultipartFile(diskFileItem);
 
-        list.add(uploadFile);
     }
 
     @Test
     void registerAndDetail() throws IOException {
         BoardRegisterDto boardRegisterDto = new BoardRegisterDto("test", memberId, "test");
-        int boardId = boardService.register(boardRegisterDto, list);
+        int boardId = boardService.register(boardRegisterDto);
         BoardDto boardDto = boardService.detail(boardId);
-//        Assertions.assertEquals(boardRegisterDto.getContent(),boardService.detail(boardId).getContent());
         Assertions.assertTrue(
                 boardRegisterDto.getContent().equals(boardDto.getContent())
                         && boardRegisterDto.getTitle().equals(boardDto.getTitle())
                         && boardRegisterDto.getMember_id() == boardDto.getWriterId()
-                        && list.get(0).getOriginalFilename().equals(boardDto.getImageList().get(0).getOriginalExtension())
+
         );
     }
 

@@ -17,16 +17,14 @@ public class BoardDto {
 
     int writerId;
     private List<CommentBoardDto> commentBoardList;
-    private List<ImageDto> imageList;
 
-    public BoardDto(Board board, List<CommentBoardDto> commentBoards, List<ImageDto> images, String memberNickname) {
+    public BoardDto(Board board, List<CommentBoardDto> commentBoards,String memberNickname) {
         this.boardId = board.getBoardId();
         this.title = board.getTitle();
         this.hit = board.getHit();
         this.content = board.getContent();
         this.writerId = board.getMemberId();
         this.commentBoardList = commentBoards;
-        this.imageList = images;
         this.writerNickname = memberNickname;
         this.registerTime = board.getRegisterTime();
     }
@@ -41,7 +39,6 @@ public class BoardDto {
                 ", writerNickname='" + writerNickname + '\'' +
                 ", writerId=" + writerId +
                 ", commentBoardList=" + commentBoardList +
-                ", imageList=" + imageList +
                 '}';
     }
 }

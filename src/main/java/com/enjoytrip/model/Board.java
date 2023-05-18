@@ -34,4 +34,16 @@ public class Board extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", updatable = false)
     private List<Image> imageList;
+
+    public void deleteBoard() {
+        this.delYn=true;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

@@ -1,4 +1,4 @@
-package com.enjoytrip.board.repository;
+package com.enjoytrip.util;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Repository
-public class LocalImageUploadRepository implements ImageUploadRepository{
+public class LocalImageUploadUtil implements ImageUploadUtil {
 
     private final String path = "src/main/resources/file/image/";
     @Override
