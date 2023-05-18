@@ -26,7 +26,7 @@ public class MemberAuthController {
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody RegisterDto registerDto) throws SQLException {
 
-        memberService.join(registerDto);
+        memberService.join(registerDto, "user");
         return new ResponseEntity(HttpStatus.OK);
 
     }

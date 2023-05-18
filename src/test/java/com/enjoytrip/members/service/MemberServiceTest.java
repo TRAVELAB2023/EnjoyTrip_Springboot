@@ -43,7 +43,7 @@ class MemberServiceTest {
         RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
         LoginDto loginDto = new LoginDto("test@test.com", "test");
 
-        memberService.join(registerDto);
+        memberService.join(registerDto, "user");
         SessionDto sessionDto = memberService.login(loginDto);
         Assertions.assertEquals(sessionDto.getNickname(), "test");
 
@@ -78,7 +78,7 @@ class MemberServiceTest {
     void isDuplicatedEmail() {
         RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
         try {
-            memberService.join(registerDto);
+            memberService.join(registerDto, "user");
             Assertions.assertTrue(memberService.isDuplicatedEmail(registerDto.getEmail()));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ class MemberServiceTest {
     void isDuplicatedNickname() {
         RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
         try {
-            memberService.join(registerDto);
+            memberService.join(registerDto, "user");
             Assertions.assertTrue(memberService.isDuplicatedNickname(registerDto.getNickname()));
         } catch (SQLException e) {
             e.printStackTrace();

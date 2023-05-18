@@ -31,7 +31,7 @@ class MemberRepositoryTest {
         registerDtoList.add(new RegisterDto("113@22","113",true,"11"));
         registerDtoList.add(new RegisterDto("111@22","111",true,"11"));
         for (RegisterDto registerDto : registerDtoList) {
-            memberService.join(registerDto);
+            memberService.join(registerDto, "user");
         }
 
         List<MemberIdMapping> list = memberRepository.findAllIdByNicknameContains("11");

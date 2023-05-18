@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int join(RegisterDto registerDto) throws SQLException {
+    public int join(RegisterDto registerDto, String role) throws SQLException {
         if(isDuplicatedEmail(registerDto.getEmail())&&isDuplicatedNickname(registerDto.getNickname())){
             throw new MemberException(MemberExceptionMessage.DUPLICATED_EMAIL_AND_NICKNAME);
         } else if (isDuplicatedEmail(registerDto.getEmail())) {
@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
                 .password(registerDto.getPassword())
                 .marketingAgreement(registerDto.isMarketing())
                 .nickname(registerDto.getNickname())
-                .role(registerDto.getRole())
+                .role(role)
                 .build();
 
         return memberRepository.save(member).getMemberId();

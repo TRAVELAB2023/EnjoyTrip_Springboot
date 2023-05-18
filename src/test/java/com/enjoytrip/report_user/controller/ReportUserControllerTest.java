@@ -44,7 +44,7 @@ class ReportUserControllerTest {
     @BeforeEach
     void beforeEach() throws SQLException {
         for (int i = 1; i <= 2; i++) {
-            memberIds[i-1]= memberService.join(new RegisterDto(i+"test@test",i+"test",true,"test"));
+            memberIds[i-1]= memberService.join(new RegisterDto(i+"test@test",i+"test",true,"test"),"user");
         }
     }
 

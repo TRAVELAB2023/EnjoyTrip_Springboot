@@ -4,7 +4,6 @@ import com.enjoytrip.members.mapper.MemberIdMapping;
 import com.enjoytrip.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -13,4 +12,5 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
     int countMembersByNickname(String nickname);
     int countMembersByEmail(String Email);
     List<MemberIdMapping> findAllIdByNicknameContains(String nickname);
+    Member findByMemberId(int memberId);
 }

@@ -3,8 +3,7 @@ package com.enjoytrip.notice.service;
 import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
-import com.enjoytrip.notice.util.SearchCondition;
-import org.springframework.data.domain.Page;
+import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

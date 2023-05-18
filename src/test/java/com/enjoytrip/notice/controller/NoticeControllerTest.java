@@ -3,6 +3,7 @@ package com.enjoytrip.notice.controller;
 import com.enjoytrip.exception.custom_exception.WrongPageException;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
+import com.enjoytrip.model.Notice;
 import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
@@ -11,8 +12,10 @@ import com.enjoytrip.notice.service.NoticeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +23,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import javax.transaction.Transactional;
 
@@ -46,13 +52,15 @@ class NoticeControllerTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+
+
     static int adminId = 0;
     @BeforeEach
-    void before() throws SQLException {
-        RegisterDto registerDto = new RegisterDto("test@test","test",true,"test");
-        registerDto.grantAdmin();
-        adminId = memberService.join(registerDto);
+    public void setup() throws SQLException {
+        adminId = memberService.join(new RegisterDto("test@test", "test", true, "test"), "admin");
     }
+
+
 
     @Test
     void detail() throws Exception {
@@ -61,7 +69,7 @@ class NoticeControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(get("/notice/"+noticeId)
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk()).andReturn();
+        ).andExpect(status().isOk()).andDo(print()).andReturn();
 
         NoticeDetailDto noticeDetailDto = objectMapper.registerModule(new JavaTimeModule()).readValue(mvcResult.getResponse().getContentAsString(),NoticeDetailDto.class);
         Assertions.assertEquals(noticeDetailDto.getContent(),noticeRegisterDto.getContent());

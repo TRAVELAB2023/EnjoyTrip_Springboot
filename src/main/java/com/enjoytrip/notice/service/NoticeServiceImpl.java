@@ -12,7 +12,7 @@ import com.enjoytrip.notice.dto.NoticeDetailDto;
 import com.enjoytrip.notice.dto.NoticeListDto;
 import com.enjoytrip.notice.dto.NoticeRegisterDto;
 import com.enjoytrip.notice.repository.NoticeRepository;
-import com.enjoytrip.notice.util.SearchCondition;
+import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,9 +60,7 @@ public class NoticeServiceImpl implements NoticeService{
 
     //Enum으로 변경 가능
     private Page<Notice> getNoticesBySearchConditionAndPageable(SearchCondition searchCondition, Pageable pageable) {
-        if (searchCondition.getSearchType() == 0) {
-            return noticeRepository.findAllByOrderByRegisterTimeDesc(pageable);
-        }else if(searchCondition.getSearchType() == 1){
+       if(searchCondition.getSearchType() == 1){
             return noticeRepository.findByTitleContainsOrderByRegisterTimeDesc(searchCondition.getSearchString(), pageable);
         }else if(searchCondition.getSearchType() == 2){
             return noticeRepository.findByContentContainsOrderByRegisterTimeDesc(searchCondition.getSearchString(), pageable);
@@ -72,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService{
             List<Integer> memberIdList = getMemberIdListByNicknameLike(searchCondition.getSearchString());
             return noticeRepository.findByMemberIdInOrderByRegisterTimeDesc(memberIdList, pageable);
         }
-        return null;
+        return noticeRepository.findAllByOrderByRegisterTimeDesc(pageable);
     }
 
     private List<Integer> getMemberIdListByNicknameLike(String nickname){
