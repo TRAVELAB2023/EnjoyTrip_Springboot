@@ -33,5 +33,8 @@ public class CommentBoard extends BaseTimeEntity {
     public void updateContent(String content){
         this.content = content;
     }
+    public void setRgroup(){
+        this.rgroup = this.commentId;
+    }
 
 }

@@ -6,4 +6,9 @@ import lombok.Getter;
 public class ReplyUpdateDto {
     int replyId;
     String content;
+
+    public ReplyUpdateDto(int replyId, String content) {
+        this.replyId = replyId;
+        this.content = content;
+    }
 }

@@ -23,8 +23,11 @@ public class CommentBoardServiceImpl implements CommentBoardService{
                 .content(registerDto.getContent())
                 .memberId(registerDto.getMemberId())
                 .build();
+        commentBoard = commentBoardRepository.save(commentBoard);
+        commentBoard.setRgroup();
 
-        return commentBoardRepository.save(commentBoard).getCommentId();
+
+        return commentBoard.getCommentId();
     }
 
     @Override
