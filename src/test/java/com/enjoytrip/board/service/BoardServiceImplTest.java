@@ -2,6 +2,9 @@ package com.enjoytrip.board.service;
 
 import com.enjoytrip.board.dto.BoardDto;
 import com.enjoytrip.board.dto.BoardRegisterDto;
+import com.enjoytrip.board.dto.BoardUpdateDto;
+import com.enjoytrip.exception.custom_exception.BoardException;
+import com.enjoytrip.exception.custom_exception.RoleException;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.service.MemberService;
 import org.apache.commons.io.IOUtils;
@@ -51,4 +54,24 @@ class BoardServiceImplTest {
         );
     }
 
+    @Test
+    void update() throws IOException {
+        BoardRegisterDto boardRegisterDto = new BoardRegisterDto("test", memberId, "test");
+        int boardId = boardService.register(boardRegisterDto);
+        BoardDto boardDto = boardService.detail(boardId);
+
+        BoardUpdateDto boardUpdateDto = new BoardUpdateDto(boardDto.getBoardId(), boardDto.getTitle(), "변경");
+        boardService.update(boardUpdateDto);
+        BoardDto boardDto2 = boardService.detail(boardId);
+
+        Assertions.assertEquals(boardDto2.getContent(),boardUpdateDto.getContent());
+    }
+
+    @Test
+    void delete() throws IOException {
+        BoardRegisterDto boardRegisterDto = new BoardRegisterDto("test", memberId, "test");
+        int boardId = boardService.register(boardRegisterDto);
+        boardService.delete(boardId);
+        Assertions.assertThrows(BoardException.class, () -> boardService.detail(boardId));
+    }
 }

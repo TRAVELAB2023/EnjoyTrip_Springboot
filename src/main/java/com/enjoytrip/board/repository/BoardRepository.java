@@ -11,14 +11,15 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer> {
     Board findByBoardId(int boardId);
+    Board findByBoardIdAndDelYn(int boardId, boolean delYn);
 
-    List<Board> findAllByOrderByRegisterTimeDesc(Pageable pageable);
+    List<Board> findAllByAndDelYnOrderByRegisterTimeDesc(Pageable pageable, boolean delYn);
 
-    List<Board> findByTitleContainsOrderByRegisterTimeDesc(String searchString, Pageable pageable);
+    List<Board> findByTitleContainsAndDelYnOrderByRegisterTimeDesc(String searchString, Pageable pageable, boolean delYn);
 
-    List<Board> findByContentContainsOrderByRegisterTimeDesc(String searchString, Pageable pageable);
+    List<Board> findByContentContainsAndDelYnOrderByRegisterTimeDesc(String searchString, Pageable pageable, boolean delYn);
 
-    List<Board> findByTitleContainsOrContentContainsOrderByRegisterTimeDesc(String searchString, String searchString1, Pageable pageable);
+    List<Board> findByTitleContainsOrContentContainsAndDelYnOrderByRegisterTimeDesc(String searchString, String searchString1, Pageable pageable, boolean delYn);
 
-    List<Board> findByMemberIdInOrderByRegisterTimeDesc(List<Integer> memberIdList, Pageable pageable);
+    List<Board> findByMemberIdInAndDelYnOrderByRegisterTimeDesc(List<Integer> memberIdList, Pageable pageable, boolean delYn);
 }
