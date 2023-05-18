@@ -23,6 +23,15 @@ public class CommentBoardDto {
         this.replyDepth = commentBoard.isReplyDepth();
     }
 
+    public CommentBoardDto(int commentId, String content, int memberId, String memberNickname, int rgroup, boolean replyDepth) {
+        this.commentId = commentId;
+        this.content = content;
+        this.memberId = memberId;
+        this.memberNickname = memberNickname;
+        this.rgroup = rgroup;
+        this.replyDepth = replyDepth;
+    }
+
     @Override
     public String toString() {
         return "CommentBoardDto{" +

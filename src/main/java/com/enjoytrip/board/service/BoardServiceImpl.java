@@ -46,6 +46,7 @@ public class BoardServiceImpl implements BoardService {
         if (board == null) {
             throw new BoardException(BoardExceptionMessage.WRONG_PAGE);
         }
+        board.increaseHit();
         List<CommentBoardDto> commentBoardDtoList = getCommentBoardDtoList(boardId);
         String writerNickname = memberRepository.findByMemberId(board.getMemberId()).getNickname();
 

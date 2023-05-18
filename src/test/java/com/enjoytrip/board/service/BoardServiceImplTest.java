@@ -37,7 +37,7 @@ class BoardServiceImplTest {
 
     @BeforeEach
     void before() throws SQLException, IOException {
-        memberId = memberService.join(new RegisterDto("test@test", "test", true, "test"));
+        memberId = memberService.join(new RegisterDto("test@test", "test", true, "test"),"user");
 
     }
 

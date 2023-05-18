@@ -8,17 +8,27 @@ import java.util.List;
 
 @Getter
 public class BoardDto {
-    int boardId;
-    String title;
-    int hit;
-    String content;
-    String writerNickname;
-    LocalDateTime registerTime;
-
-    int writerId;
+    private int boardId;
+    private String title;
+    private int hit;
+    private String content;
+    private String writerNickname;
+    private LocalDateTime registerTime;
+    private int writerId;
     private List<CommentBoardDto> commentBoardList;
 
-    public BoardDto(Board board, List<CommentBoardDto> commentBoards,String memberNickname) {
+    public BoardDto(int boardId, String title, int hit, String content, String writerNickname, LocalDateTime registerTime, int writerId, List<CommentBoardDto> commentBoardList) {
+        this.boardId = boardId;
+        this.title = title;
+        this.hit = hit;
+        this.content = content;
+        this.writerNickname = writerNickname;
+        this.registerTime = registerTime;
+        this.writerId = writerId;
+        this.commentBoardList = commentBoardList;
+    }
+
+    public BoardDto(Board board, List<CommentBoardDto> commentBoards, String memberNickname) {
         this.boardId = board.getBoardId();
         this.title = board.getTitle();
         this.hit = board.getHit();

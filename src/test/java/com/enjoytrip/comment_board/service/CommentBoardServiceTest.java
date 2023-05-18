@@ -2,7 +2,6 @@ package com.enjoytrip.comment_board.service;
 
 import com.enjoytrip.board.dto.BoardDto;
 import com.enjoytrip.board.dto.BoardRegisterDto;
-import com.enjoytrip.board.dto.CommentBoardDto;
 import com.enjoytrip.board.service.BoardService;
 import com.enjoytrip.comment_board.dto.ReplyRegisterDto;
 import com.enjoytrip.comment_board.dto.ReplyReplyRegisterDto;
@@ -36,7 +35,7 @@ class CommentBoardServiceTest {
 
     @BeforeEach
     void before() throws SQLException, IOException {
-        memberId = memberService.join(new RegisterDto("test@test", "test", true, "test"));
+        memberId = memberService.join(new RegisterDto("test@test", "test", true, "test"),"user");
         boardId= boardService.register(new BoardRegisterDto("test", memberId, "test"));
     }
 
@@ -88,6 +87,4 @@ class CommentBoardServiceTest {
         BoardDto boardDto = boardService.detail(boardId);
         Assertions.assertEquals(boardDto.getCommentBoardList().size(),1);
     }
-
-
 }

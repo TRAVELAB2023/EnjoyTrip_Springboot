@@ -1,5 +1,6 @@
 package com.enjoytrip.model;
 
+import com.enjoytrip.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Table(name = "members")
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -24,8 +25,6 @@ public class Member {
     private String nickname;
     private String password;
 
-    @Column(name = "register_time")
-    private LocalDateTime registerTime;
 
     @Column(name = "marketing_agreement")
     private boolean marketingAgreement;
@@ -43,7 +42,6 @@ public class Member {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", password='" + password + '\'' +
-                ", registerTime=" + registerTime +
                 ", marketingAgreement=" + marketingAgreement +
                 ", role='" + role + '\'' +
                 ", delYn=" + delYn +

@@ -35,7 +35,7 @@ class NoticeServiceImplTest {
     @DisplayName("관리자 아닌 유저 글 작성 테스트")
     void register_failed() throws Exception {
         RegisterDto registerDto = new RegisterDto("test@test.com", "test", true, "test");
-        int n = memberService.join(registerDto);
+        int n = memberService.join(registerDto,"user");
         NoticeRegisterDto noticeRegisterDto = new NoticeRegisterDto("test", n, "테스트입니다.");
         Assertions.assertThrows(RoleException.class, () -> noticeService.register(noticeRegisterDto));
     }

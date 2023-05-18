@@ -14,7 +14,6 @@ public class RegisterDto {
     @NotBlank
     private String nickname;
     private boolean marketing;
-    private String role;
     @NotBlank
     private String password;
 
@@ -24,16 +23,9 @@ public class RegisterDto {
         this.email = email;
         this.nickname = nickname;
         this.marketing = marketing;
-        this.role = "user";
         this.password=password;
     }
 
-    public void grantAdmin() {
-        this.role = "admin";
-    }
-    public void revokeAdmin(){
-        this.role = "user";
-    }
 
     @Override
     public String toString() {
@@ -41,7 +33,6 @@ public class RegisterDto {
                 "email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", marketing=" + marketing +
-                ", role='" + role + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
