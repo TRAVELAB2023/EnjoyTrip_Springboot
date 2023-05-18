@@ -2,13 +2,11 @@ package com.enjoytrip.board.service;
 
 import com.enjoytrip.board.dto.*;
 import com.enjoytrip.board.repository.BoardRepository;
-import com.enjoytrip.board.repository.CommentBoardRepository;
-import com.enjoytrip.board.repository.ImageRepository;
+import com.enjoytrip.comment_board.repository.CommentBoardRepository;
 import com.enjoytrip.members.mapper.MemberIdMapping;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Board;
 import com.enjoytrip.model.CommentBoard;
-import com.enjoytrip.model.Image;
 import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

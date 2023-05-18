@@ -1,7 +1,7 @@
 package com.enjoytrip;
 
 import com.enjoytrip.board.repository.BoardRepository;
-import com.enjoytrip.board.repository.CommentBoardRepository;
+import com.enjoytrip.comment_board.repository.CommentBoardRepository;
 import com.enjoytrip.board.repository.ImageRepository;
 import com.enjoytrip.util.ImageUploadUtil;
 import com.enjoytrip.board.service.BoardService;

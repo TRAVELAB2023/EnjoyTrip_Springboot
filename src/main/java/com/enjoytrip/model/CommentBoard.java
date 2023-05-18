@@ -30,4 +30,8 @@ public class CommentBoard extends BaseTimeEntity {
     @Column(name = "reply_depth")
     boolean replyDepth;
 
+    public void updateContent(String content){
+        this.content = content;
+    }
+
 }
