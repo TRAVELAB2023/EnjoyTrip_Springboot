@@ -1,5 +1,6 @@
 package com.enjoytrip.util;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -7,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Repository
+@Component
 public class LocalImageUploadUtil implements ImageUploadUtil {
 
     private final String path = "src/main/resources/file/image/";
