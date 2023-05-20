@@ -38,7 +38,6 @@ public class FileUploadTest {
     @DisplayName("허용되지 않는 파일 업로드 테스트")
     public void fileUploadExceptionTest() throws Exception{
         Path path= Paths.get("src/test/image/img.bmp");
-        System.out.println(path.toString());
         MockMultipartFile file=new MockMultipartFile("file","img.bmp","bmp",new FileInputStream(path.toFile()));
         mockmvc.perform(multipart("/upload").file(file))
                 .andExpect(status().isBadRequest())
