@@ -14,6 +14,11 @@ import java.sql.SQLException;
 
 @RestControllerAdvice
 public class ExceptionAdvise {
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity ExceptionHandle() {
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @ExceptionHandler(SQLException.class)
     public ResponseEntity SqlExceptionHandle() {
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -35,7 +35,13 @@ public class AWSImageUploadUtil implements ImageUploadUtil{
 
         try(InputStream inputStream=file.getInputStream()){
             String contentType=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+
+            if(!isCorrectContentType(contentType)){
+                logger.info("잘못된 파일 타입 : {}",contentType);
+                throw new FileException(FileExceptionMessage.WRONG_CONTENT_TYPE);
+            }
             String fullFilePath=filePath+"/"+dirname+"/"+filename+contentType;
+
 
             logger.debug("파일 경로 : {}",fullFilePath);
 
@@ -44,9 +50,21 @@ public class AWSImageUploadUtil implements ImageUploadUtil{
             objectMetadata.setContentType(file.getContentType());
             amazonS3.putObject(new PutObjectRequest(bucket, fullFilePath, inputStream, objectMetadata));
             return fullFilePath;
+        } catch (FileException e) {
+            throw e;
         } catch (IOException e) {
             logger.error("파일 저장 도중 에러 : {}",e.getMessage());
             throw new FileException(FileExceptionMessage.DATA_NOT_FOUND);
         }
+    }
+
+    private boolean isCorrectContentType(String contentType) {
+        if(contentType==null){
+            return false;
+        }
+        if(contentType.equals(".jpeg") || contentType.equals((".png")) || contentType.equals((".jpg"))){
+            return true;
+        }
+        return false;
     }
 }
