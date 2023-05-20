@@ -1,5 +1,6 @@
 package com.enjoytrip.exception;
 
+import com.enjoytrip.exception.custom_exception.FileException;
 import com.enjoytrip.exception.custom_exception.MemberException;
 import com.enjoytrip.exception.custom_exception.PlanException;
 import com.enjoytrip.exception.custom_exception.RoleException;
@@ -31,6 +32,12 @@ public class ExceptionAdvise {
     @ExceptionHandler
     public ResponseEntity<String> MethodArgumentNotValidExceptionHandle(MethodArgumentNotValidException exception){
         return new ResponseEntity(exception.getBindingResult().getAllErrors().get(0).getDefaultMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler
+    public ResponseEntity<String> FileExceptionHandle(FileException fileException){
+        return new ResponseEntity(fileException.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
 

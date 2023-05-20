@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 
+import com.enjoytrip.exception.custom_exception.FileException;
+import com.enjoytrip.exception.message.FileExceptionMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,21 +33,20 @@ public class AWSImageUploadUtil implements ImageUploadUtil{
 
     public String uploadFile(MultipartFile file,String dirname, String filename) throws IOException {
 
-        String contentType=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
-        String fullFilePath=filePath+"/"+dirname+"/"+filename+contentType;
-//		String fullFilePath=filePath+"/"+dirname+"/"+filename;
-
-        logger.debug("파일 경로 : {}",fullFilePath);
-
-        ObjectMetadata objectMetadata=new ObjectMetadata();
-        objectMetadata.setContentLength(file.getSize());
-        objectMetadata.setContentType(file.getContentType());
-
         try(InputStream inputStream=file.getInputStream()){
+            String contentType=file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
+            String fullFilePath=filePath+"/"+dirname+"/"+filename+contentType;
+
+            logger.debug("파일 경로 : {}",fullFilePath);
+
+            ObjectMetadata objectMetadata=new ObjectMetadata();
+            objectMetadata.setContentLength(file.getSize());
+            objectMetadata.setContentType(file.getContentType());
             amazonS3.putObject(new PutObjectRequest(bucket, fullFilePath, inputStream, objectMetadata));
+            return fullFilePath;
         } catch (IOException e) {
             logger.error("파일 저장 도중 에러 : {}",e.getMessage());
+            throw new FileException(FileExceptionMessage.DATA_NOT_FOUND);
         }
-        return fullFilePath;
     }
 }

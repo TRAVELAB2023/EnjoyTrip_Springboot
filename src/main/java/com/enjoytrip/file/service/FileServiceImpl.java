@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class FileServiceImpl implements FileService{
     }
 
     @Override
-    public String uploadFile(MultipartFile file) {
+    public String uploadFile(MultipartFile file) throws IOException {
         String fileName= UUID.randomUUID().toString();
         LocalDate localDate= LocalDate.now();
         imageUploadUtil.uploadFile(file,localDate.toString(),fileName);
