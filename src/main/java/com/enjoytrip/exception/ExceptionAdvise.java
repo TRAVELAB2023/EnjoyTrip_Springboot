@@ -1,6 +1,7 @@
 package com.enjoytrip.exception;
 
 import com.enjoytrip.exception.custom_exception.MemberException;
+import com.enjoytrip.exception.custom_exception.PlanException;
 import com.enjoytrip.exception.custom_exception.RoleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
