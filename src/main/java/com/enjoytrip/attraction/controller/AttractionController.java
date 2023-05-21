@@ -6,12 +6,10 @@ import com.enjoytrip.model.SearchCondition;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+@CrossOrigin("*")
 @RestController
 public class AttractionController {
     private final AttractionService attractionService;
@@ -32,7 +30,7 @@ public class AttractionController {
     }
     @GetMapping("/attraction/{contentId}")
     public ResponseEntity<Attraction> getAttraction(@PathVariable String contentId){
-        Attraction attraction=attractionService.getAttraction(contentId);
+        Attraction attraction=attractionService.getAttraction(Integer.parseInt(contentId));
         return new ResponseEntity<Attraction>(attraction, HttpStatus.OK);
     }
 }

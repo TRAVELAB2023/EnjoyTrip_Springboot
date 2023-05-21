@@ -8,7 +8,7 @@ import java.util.List;
 public interface AttractionService {
 
     List<Attraction> getAttractionList(SearchCondition condition,int memberId);
-
-    Attraction getAttraction(String contentId);
+    
+    Attraction getAttraction(int contentId);
 
 }

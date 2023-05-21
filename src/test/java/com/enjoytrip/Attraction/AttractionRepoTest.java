@@ -101,5 +101,11 @@ public class AttractionRepoTest {
         logger.info("데이터 : {}",list);
         Assertions.assertEquals(1,list.size());
     }
+    @Test
+    @DisplayName("특정 관광지 조회")
+    public void testGetAttraction(){
+        Attraction attraction=attractionRepository.findByContentId(125266);
+        Assertions.assertNotNull(attraction);
+    }
 
 }
