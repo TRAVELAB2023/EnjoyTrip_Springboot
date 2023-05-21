@@ -30,4 +30,9 @@ public class AttractionController {
         List<Attraction> list=attractionService.getAttractionList(condition,1);
         return new ResponseEntity<List<Attraction>>(list, HttpStatus.OK);
     }
+    @GetMapping("/attraction/{contentId}")
+    public ResponseEntity<Attraction> getAttraction(@PathVariable String contentId){
+        Attraction attraction=attractionService.getAttraction(contentId);
+        return new ResponseEntity<Attraction>(attraction, HttpStatus.OK);
+    }
 }

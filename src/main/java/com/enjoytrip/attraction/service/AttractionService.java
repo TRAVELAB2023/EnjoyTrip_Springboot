@@ -9,4 +9,6 @@ public interface AttractionService {
 
     List<Attraction> getAttractionList(SearchCondition condition,int memberId);
 
+    Attraction getAttraction(String contentId);
+
 }
