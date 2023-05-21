@@ -25,7 +25,7 @@ public class AttractionServiceImpl implements AttractionService{
     }
 
     @Override
-    public Attraction getAttraction(String contentId) {
+    public Attraction getAttraction(int contentId) {
         Attraction attraction= attractionRepository.findByContentId(contentId);
 
         return attraction;
