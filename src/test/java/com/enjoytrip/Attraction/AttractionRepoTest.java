@@ -104,7 +104,7 @@ public class AttractionRepoTest {
     @Test
     @DisplayName("특정 관광지 조회")
     public void testGetAttraction(){
-        Attraction attraction=attractionRepository.findByContentId("125266");
+        Attraction attraction=attractionRepository.findByContentId(125266);
         Assertions.assertNotNull(attraction);
     }
 
