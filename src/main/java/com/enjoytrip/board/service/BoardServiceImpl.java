@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,13 +102,15 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public void update(BoardUpdateDto boardUpdateDto) {
-        Board board = boardRepository.findByBoardId(boardUpdateDto.getBoardId());
+        Board board = boardRepository.findByBoardId(boardUpdateDto.getId());
         board.updateContent(boardUpdateDto.getContent());
         board.updateTitle(boardUpdateDto.getTitle());
     }
 
     @Override
+    @Transactional
     public void delete(int boardId) {
         Board board = boardRepository.findByBoardId(boardId);
         board.deleteBoard();
