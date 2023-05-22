@@ -6,6 +6,7 @@ import com.enjoytrip.model.Attraction;
 import com.enjoytrip.model.Plan;
 import com.enjoytrip.model.PlanDetail;
 import com.enjoytrip.plan.dto.PlanDto;
+import com.enjoytrip.plan.dto.PlanListResponseDto;
 import com.enjoytrip.plan.dto.PlanRequestDto;
 import com.enjoytrip.plan.repository.PlanRepository;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,13 +26,10 @@ public class PlanServiceImpl implements PlanService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<PlanDto> findByMemberId(int memberId,Pageable pageable) {
+    public PlanListResponseDto findByMemberId(int memberId,Pageable pageable) {
         Page<Plan> planList=planRepository.findPageByMemberId(memberId,pageable);
-        List<PlanDto> resultList=new ArrayList<>();
-        for(Plan plan : planList.getContent()){
-            resultList.add(new PlanDto(plan));
-        }
-        return resultList;
+        PlanListResponseDto planListResponseDto=new PlanListResponseDto(planList);
+        return planListResponseDto;
     }
 
     @Override
