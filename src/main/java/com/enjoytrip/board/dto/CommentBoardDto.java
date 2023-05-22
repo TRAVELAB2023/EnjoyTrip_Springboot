@@ -1,9 +1,11 @@
 package com.enjoytrip.board.dto;
 
 import com.enjoytrip.model.CommentBoard;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 
 import javax.persistence.Column;
+import java.time.LocalDateTime;
 
 @Getter
 public class CommentBoardDto {
@@ -14,6 +16,8 @@ public class CommentBoardDto {
     int rgroup;
     boolean replyDepth;
 
+    @JsonSerialize
+    LocalDateTime registerTime;
     public CommentBoardDto(CommentBoard commentBoard, String memberNickname) {
         this.commentId = commentBoard.getCommentId();
         this.content = commentBoard.getContent();
@@ -21,6 +25,7 @@ public class CommentBoardDto {
         this.memberNickname = memberNickname;
         this.rgroup = commentBoard.getRgroup();
         this.replyDepth = commentBoard.isReplyDepth();
+        this.registerTime=commentBoard.getRegisterTime();
     }
 
     public CommentBoardDto(int commentId, String content, int memberId, String memberNickname, int rgroup, boolean replyDepth) {

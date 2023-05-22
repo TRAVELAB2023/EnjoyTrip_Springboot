@@ -30,7 +30,7 @@ public class SpringConfig {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final CommentBoardRepository commentBoardRepository;
-    private final ImageUploadUtil imageUploadRepository;
+    private final ImageUploadUtil imageUploadUtil;
     public SpringConfig(MemberRepository memberRepository, MemberLikeRepository memberLikeRepository, ReportUserRepository reportUserRepository, NoticeRepository noticeRepository, BoardRepository boardRepository, ImageRepository imageRepository, CommentBoardRepository commentBoardRepository, ImageUploadUtil imageUploadRepository) {
         this.memberRepository = memberRepository;
         this.memberLikeRepository = memberLikeRepository;
@@ -39,7 +39,7 @@ public class SpringConfig {
         this.boardRepository = boardRepository;
         this.imageRepository = imageRepository;
         this.commentBoardRepository = commentBoardRepository;
-        this.imageUploadRepository = imageUploadRepository;
+        this.imageUploadUtil = imageUploadRepository;
     }
 
     @Bean

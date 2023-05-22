@@ -29,10 +29,15 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<BoardListDto>> list(@RequestBody BoardSearchDto boardSearchDto) throws Exception{
+    public ResponseEntity list(@RequestParam(required = false,defaultValue = "") String searchString,
+                                                   @RequestParam(required = false,defaultValue = "0") int searchType,
+                                                   @RequestParam(required = false,defaultValue = "0") int start,
+                                                   @RequestParam(required = false,defaultValue = "10") int size){
+
+        BoardSearchDto boardSearchDto = new BoardSearchDto(searchString, searchType, start, size);
         SearchCondition searchCondition = new SearchCondition(boardSearchDto.getSearchString(), boardSearchDto.getSearchType());
-        List<BoardListDto> list = boardService.list(searchCondition, PageRequest.of(boardSearchDto.getStart(), boardSearchDto.getSize()));
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        BoardPageDto boardPageDto = boardService.list(searchCondition, PageRequest.of(boardSearchDto.getStart(), boardSearchDto.getSize()));
+        return new ResponseEntity<>(boardPageDto, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -52,4 +57,6 @@ public class BoardController {
         boardService.update(boardUpdateDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+
 }
