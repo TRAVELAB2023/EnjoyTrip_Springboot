@@ -19,4 +19,12 @@ public class PlanRequestDto {
         this.planName = planName;
         this.contentIdList = contentIdList;
     }
+
+    @Override
+    public String toString() {
+        return "PlanRequestDto{" +
+                "planName='" + planName + '\'' +
+                ", contentIdList=" + contentIdList +
+                '}';
+    }
 }

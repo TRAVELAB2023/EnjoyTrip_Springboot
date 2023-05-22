@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Component
 public class LocalImageUploadUtil implements ImageUploadUtil {
 
     private final String path = "src/main/resources/file/image/";

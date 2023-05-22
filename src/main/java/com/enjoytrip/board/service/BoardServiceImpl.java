@@ -10,6 +10,7 @@ import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Board;
 import com.enjoytrip.model.CommentBoard;
 import com.enjoytrip.util.SearchCondition;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class BoardServiceImpl implements BoardService {
         Board board = Board.builder()
                 .title(boardRegisterDto.getTitle())
                 .content(boardRegisterDto.getContent())
-                .memberId(boardRegisterDto.getMember_id())
+                .memberId(boardRegisterDto.getMemberId())
                 .build();
         return boardRepository.save(board).getBoardId();
     }
@@ -64,17 +65,19 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardListDto> list(SearchCondition searchCondition, Pageable pageable) {
-        List<Board> boards = getBoardList(searchCondition, pageable);
+    public BoardPageDto list(SearchCondition searchCondition, Pageable pageable) {
+        Page<Board> boardPage = getBoardList(searchCondition, pageable);
+        List<Board> boards = boardPage.toList();
+        int size = boardPage.getTotalPages();
         List<BoardListDto> boardListDtoList = new ArrayList<>();
         for (Board board : boards) {
             boardListDtoList.add(new BoardListDto(board, memberRepository.findByMemberId(board.getMemberId()).getNickname()));
         }
-
-        return boardListDtoList;
+        BoardPageDto boardPageDto = new BoardPageDto(size, boardListDtoList);
+        return boardPageDto;
     }
 
-    private List<Board> getBoardList(SearchCondition searchCondition, Pageable pageable) {
+    private Page<Board> getBoardList(SearchCondition searchCondition, Pageable pageable) {
         if (searchCondition.getSearchType() == 1) {
             return boardRepository.findByTitleContainsAndDelYnOrderByRegisterTimeDesc(searchCondition.getSearchString(), pageable,false);
         } else if (searchCondition.getSearchType() == 2) {

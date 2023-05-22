@@ -77,5 +77,29 @@ public class AttractionControllerTest {
                 .andExpect(content().string("[{\"contentId\":1,\"contentTypeId\":1,\"title\":\"title\",\"addr1\":\"addr1\",\"firstImage\":\"firstImage\",\"sidoCode\":1,\"gugunCode\":1,\"latitude\":1.0,\"longitude\":1.0,\"overview\":\"overview\"}]"))
                 .andDo(print());
     }
+    @Test
+    @DisplayName("특정 관광지 조회")
+    public void getAttraction() throws Exception{
+        given(attractionService.getAttraction(1))
+                .willReturn(Attraction.builder()
+                        .contentTypeId(1)
+                        .contentId(1)
+                        .firstImage("firstImage")
+                        .title("title")
+                        .latitude(1.0)
+                        .longitude(1.0)
+                        .overview("overview")
+                        .gugunCode(1)
+                        .sidoCode(1)
+                        .addr1("addr1")
+                        .build());
+
+        mockMvc.perform(get("/attraction/1"))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().string("{\"contentId\":1,\"contentTypeId\":1,\"title\":\"title\",\"addr1\":\"addr1\",\"firstImage\":\"firstImage\",\"sidoCode\":1,\"gugunCode\":1,\"latitude\":1.0,\"longitude\":1.0,\"overview\":\"overview\"}"))
+                .andDo(print());
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.enjoytrip.plan.controller;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.plan.dto.PlanDto;
+import com.enjoytrip.plan.dto.PlanListResponseDto;
 import com.enjoytrip.plan.dto.PlanRequestDto;
 import com.enjoytrip.plan.service.PlanService;
 import org.springframework.data.domain.Pageable;
@@ -33,16 +34,17 @@ public class PlanController {
     }
 
     @GetMapping("/{planId}")
-    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId){
-        List<Attraction> list=planService.findByPlanId(planId);
+    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId,HttpSession session){
+        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
+        List<Attraction> list=planService.findByPlanId(planId,sessionDto.getMemberId());
         return new ResponseEntity<List<Attraction>>(list,HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PlanDto>> getPlanList(HttpSession session, @PageableDefault Pageable pageable){
+    public ResponseEntity<PlanListResponseDto> getPlanList(HttpSession session, @PageableDefault Pageable pageable){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        List<PlanDto> list=planService.findByMemberId(sessionDto.getMemberId(),pageable);
-        return new ResponseEntity<List<PlanDto>>(list,HttpStatus.OK);
+        PlanListResponseDto responseDto=planService.findByMemberId(sessionDto.getMemberId(),pageable);
+        return new ResponseEntity<PlanListResponseDto>(responseDto,HttpStatus.OK);
     }
 
 
