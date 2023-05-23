@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,11 +40,11 @@ public class MemberAuthController {
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody RegisterDto registerDto) throws SQLException {
-
         memberService.join(registerDto, "user");
         return new ResponseEntity(HttpStatus.OK);
 
     }
+
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody SessionReceiveDto sessionDto, HttpServletRequest request)
@@ -92,8 +94,20 @@ public class MemberAuthController {
         if (memberService.isDuplicatedEmail(email)) {
             return new ResponseEntity("중복", HttpStatus.OK);
         }
+        if (!isValidEmail(email)) {
+            return new ResponseEntity<>("잘못된 형식", HttpStatus.OK);
+        }
         return new ResponseEntity("사용가능", HttpStatus.OK);
-
+    }
+    public static boolean isValidEmail(String email) {
+        boolean err = false;
+        String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(email);
+        if(m.matches()) {
+            err = true;
+        }
+        return err;
     }
 
     @GetMapping("/check-duplicate-nickname/{nickname}")

@@ -1,9 +1,6 @@
 package com.enjoytrip.notice.controller;
 
-import com.enjoytrip.notice.dto.NoticeDetailDto;
-import com.enjoytrip.notice.dto.NoticeListDto;
-import com.enjoytrip.notice.dto.NoticeRegisterDto;
-import com.enjoytrip.notice.dto.NoticeSearchDto;
+import com.enjoytrip.notice.dto.*;
 import com.enjoytrip.notice.service.NoticeService;
 import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.PageRequest;
@@ -30,16 +27,27 @@ public class NoticeController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<NoticeListDto>> list(@RequestBody NoticeSearchDto noticeSearchDto) throws Exception{
+    public ResponseEntity list(@RequestParam(required = false,defaultValue = "") String searchString,
+                               @RequestParam(required = false,defaultValue = "0") int searchType,
+                               @RequestParam(required = false,defaultValue = "0") int start,
+                               @RequestParam(required = false,defaultValue = "10") int size)throws Exception{
+        NoticeSearchDto noticeSearchDto = new NoticeSearchDto(searchString, searchType, start, size);
         SearchCondition searchCondition = new SearchCondition(noticeSearchDto.getSearchString(), noticeSearchDto.getSearchType());
+        NoticePageDto noticePageDto=noticeService.noticeList(searchCondition, PageRequest.of(noticeSearchDto.getStart(), noticeSearchDto.getSize()));
 
-        List<NoticeListDto> list = noticeService.noticeList(searchCondition, PageRequest.of(noticeSearchDto.getStart(), noticeSearchDto.getSize()));
 
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        return new ResponseEntity<>(noticePageDto, HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity register(@RequestBody NoticeRegisterDto noticeRegisterDto) throws Exception {
+        System.out.println(noticeRegisterDto);
+        int noticeId= noticeService.register(noticeRegisterDto);
+        return new ResponseEntity(noticeId,HttpStatus.OK);
+    }
+
+    @PutMapping("")
+    public ResponseEntity modify(@RequestBody NoticeRegisterDto noticeRegisterDto) throws Exception {
         int noticeId= noticeService.register(noticeRegisterDto);
         return new ResponseEntity(noticeId,HttpStatus.OK);
     }
