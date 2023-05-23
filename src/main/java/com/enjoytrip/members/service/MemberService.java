@@ -17,5 +17,13 @@ public interface MemberService {
     public boolean isDuplicatedNickname(String nickname) throws SQLException;
     public boolean isDuplicatedEmail(String email) throws SQLException;
 
+    public SessionDto findByEmail(String email) throws Exception;
+
     public boolean isWritePassword(LoginDto loginDto) throws Exception;
+
+    public void saveRefreshToken(String email, String refreshToken) throws Exception;
+    public Object getRefreshToken(String email) throws Exception;
+    public void deleteRefreshToken(String email) throws Exception;
+
+    SessionDto info(int memberId);
 }

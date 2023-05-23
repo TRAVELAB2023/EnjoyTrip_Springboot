@@ -22,4 +22,16 @@ public class SessionDto {
         this.marketingAgreement = member.isMarketingAgreement();
         this.role = member.getRole();
     }
+
+    @Override
+    public String toString() {
+        return "SessionDto{" +
+                "memberId=" + memberId +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", registerTime=" + registerTime +
+                ", marketingAgreement=" + marketingAgreement +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
