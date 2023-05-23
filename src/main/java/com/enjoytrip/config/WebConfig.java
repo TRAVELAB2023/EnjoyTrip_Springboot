@@ -1,13 +1,20 @@
 package com.enjoytrip.config;
 
 import com.enjoytrip.interceptor.JwtInterceptor;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.time.Duration;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -40,10 +47,25 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
+                        "/chat",
                         "/auth/**"
                         , "/swagger-ui/**"
                         , "/swagger-resources/**"
                         , "/v2/api-docs"
                 );
     }
+
+    @Bean
+    public RestTemplate restTemplate(){
+        HttpClient client=HttpClients.custom()
+                .setMaxConnTotal(50)
+                .setMaxConnPerRoute(30)
+                .build();
+        HttpComponentsClientHttpRequestFactory factory=new HttpComponentsClientHttpRequestFactory(client);
+        factory.setConnectTimeout(3*60*1000);
+        factory.setReadTimeout(3*60*1000);
+        return new RestTemplate(factory);
+    }
+
+
 }
