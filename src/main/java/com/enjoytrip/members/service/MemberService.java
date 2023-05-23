@@ -22,7 +22,7 @@ public interface MemberService {
     public boolean isWritePassword(LoginDto loginDto) throws Exception;
 
     public void saveRefreshToken(String email, String refreshToken) throws Exception;
-    public Object getRefreshToken(String email) throws Exception;
+    public String getRefreshToken(String email) throws Exception;
     public void deleteRefreshToken(String email) throws Exception;
 
     SessionDto info(int memberId);
