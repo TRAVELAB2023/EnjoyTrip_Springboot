@@ -21,7 +21,7 @@ public class MemberLikeController {
     @PostMapping("")
     public ResponseEntity<Integer> like(HttpSession session, @RequestBody MemberLikeDto memberLikeDto) throws SQLException {
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        Integer result=memberLikeService.registerLike(memberLikeDto,12);
+        Integer result=memberLikeService.registerLike(memberLikeDto,sessionDto.getMemberId());
 
         return new ResponseEntity(result,HttpStatus.OK);
     }
@@ -29,7 +29,7 @@ public class MemberLikeController {
     public ResponseEntity<Boolean> like(HttpSession session, @PathVariable int attractionId) throws SQLException {
 
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        boolean result=memberLikeService.isCanFind(12,attractionId);
+        boolean result=memberLikeService.isCanFind(sessionDto.getMemberId(),attractionId);
 
         return new ResponseEntity(result,HttpStatus.OK);
     }
