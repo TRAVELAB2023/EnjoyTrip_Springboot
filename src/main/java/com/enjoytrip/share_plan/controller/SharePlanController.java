@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class SharePlanController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> registerSharePlan(HttpSession session, @RequestBody SharePlanRequestDto planShareRequestDto){
+    public ResponseEntity<String> registerSharePlan(HttpSession session, @RequestBody @Valid SharePlanRequestDto planShareRequestDto){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         String key=planShareService.registerSharePlan(planShareRequestDto,sessionDto.getMemberId());
         return new ResponseEntity<String>(key,HttpStatus.OK);
