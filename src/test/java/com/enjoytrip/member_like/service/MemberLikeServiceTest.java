@@ -20,12 +20,13 @@ class MemberLikeServiceTest {
 
     @Test
     void registerLike() {
-        MemberLikeDto memberLikeDto = new MemberLikeDto(12, 125266);
+        int memberId=12;
+        MemberLikeDto memberLikeDto = new MemberLikeDto( 125266);
 
         try {
-            memberLikeService.registerLike(memberLikeDto);
+            memberLikeService.registerLike(memberLikeDto,memberId);
 
-            assertTrue(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
+            assertTrue(memberLikeService.isCanFind(memberId,memberLikeDto.getAttractionId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -33,12 +34,13 @@ class MemberLikeServiceTest {
 
     @Test
     void deleteLike() {
-        MemberLikeDto memberLikeDto = new MemberLikeDto(12, 125266);
+        int memberId=12;
+        MemberLikeDto memberLikeDto = new MemberLikeDto( 125266);
         try {
-            memberLikeService.registerLike(memberLikeDto);
-            assertTrue(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
-            memberLikeService.deleteLike(memberLikeDto);
-            assertFalse(memberLikeService.isCanFind(memberLikeDto.getMemberId(),memberLikeDto.getAttractionId()));
+            memberLikeService.registerLike(memberLikeDto,memberId);
+            assertTrue(memberLikeService.isCanFind(memberId,memberLikeDto.getAttractionId()));
+            memberLikeService.registerLike(memberLikeDto,memberId);
+            assertFalse(memberLikeService.isCanFind(memberId,memberLikeDto.getAttractionId()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
