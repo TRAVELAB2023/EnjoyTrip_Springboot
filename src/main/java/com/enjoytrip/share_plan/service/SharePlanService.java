@@ -7,6 +7,6 @@ import com.enjoytrip.share_plan.dto.SharePlanRequestDto;
 import java.util.List;
 
 public interface SharePlanService {
-    void registerSharePlan(SharePlanRequestDto planShareRequestDto,int memberId);
+    String registerSharePlan(SharePlanRequestDto planShareRequestDto,int memberId);
     List<Attraction> getSharePlanAttraction(String key);
 }
