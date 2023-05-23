@@ -1,5 +1,6 @@
 package com.enjoytrip.model;
 
+import com.enjoytrip.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Table(name = "member_like")
-public class MemberLike {
+public class MemberLike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_like_id")
@@ -24,14 +25,10 @@ public class MemberLike {
     @Column(name="attraction_info")
     int attractionId;
 
-    @Column(name="register_time")
-    LocalDateTime registerTime;
-
     @Builder
-    public MemberLike(int memberLikeId, int memberId, int attractionId, LocalDateTime registerTime) {
+    public MemberLike(int memberLikeId, int memberId, int attractionId) {
         this.memberLikeId = memberLikeId;
         this.memberId = memberId;
         this.attractionId = attractionId;
-        this.registerTime = registerTime;
     }
 }

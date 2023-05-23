@@ -6,8 +6,7 @@ import com.enjoytrip.model.MemberLike;
 import java.sql.SQLException;
 
 public interface MemberLikeService {
-    void registerLike(MemberLikeDto memberLikeDto)throws SQLException;
-    void deleteLike(MemberLikeDto memberLikeDto)throws SQLException;
+    int registerLike(MemberLikeDto memberLikeDto,int memberId)throws SQLException;
 
     boolean isCanFind(int memberId, int attractionId)throws SQLException;
 }

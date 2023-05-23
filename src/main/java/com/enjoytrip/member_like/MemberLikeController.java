@@ -2,10 +2,12 @@ package com.enjoytrip.member_like;
 
 import com.enjoytrip.member_like.dto.MemberLikeDto;
 import com.enjoytrip.member_like.service.MemberLikeService;
+import com.enjoytrip.members.dto.SessionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 @RestController
@@ -16,20 +18,13 @@ public class MemberLikeController {
         this.memberLikeService = memberLikeService;
     }
 
-    @PostMapping("/like/{member-id}/{attraction-id}")
-    public ResponseEntity like(@PathVariable(name = "member-id") int memberId, @PathVariable(name = "attraction-id") int attractionId) throws SQLException {
-        MemberLikeDto memberLikeDto = new MemberLikeDto(memberId, attractionId);
-        memberLikeService.registerLike(memberLikeDto);
+    @PostMapping("")
+    public ResponseEntity<Integer> like(HttpSession session, @RequestBody MemberLikeDto memberLikeDto) throws SQLException {
+        System.out.println(memberLikeDto);
+        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
+        Integer result=memberLikeService.registerLike(memberLikeDto,sessionDto.getMemberId());
 
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @PostMapping("/not-like/{member-id}/{attraction-id}")
-    public ResponseEntity notLike(@PathVariable(name = "member-id") int memberId, @PathVariable(name = "attraction-id") int attractionId) throws SQLException {
-        MemberLikeDto memberLikeDto = new MemberLikeDto(memberId, attractionId);
-        memberLikeService.deleteLike(memberLikeDto);
-
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(result,HttpStatus.OK);
     }
 
 }
