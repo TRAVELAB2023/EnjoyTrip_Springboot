@@ -23,10 +23,10 @@ public class SharePlanController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Void> registerSharePlan(HttpSession session, @RequestBody SharePlanRequestDto planShareRequestDto){
+    public ResponseEntity<String> registerSharePlan(HttpSession session, @RequestBody SharePlanRequestDto planShareRequestDto){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        planShareService.registerSharePlan(planShareRequestDto,sessionDto.getMemberId());
-        return new ResponseEntity<>(HttpStatus.OK);
+        String key=planShareService.registerSharePlan(planShareRequestDto,sessionDto.getMemberId());
+        return new ResponseEntity<String>(key,HttpStatus.OK);
     }
     @GetMapping("/{key}")
     public ResponseEntity<List<Attraction>> getSharePlan(@PathVariable String key){

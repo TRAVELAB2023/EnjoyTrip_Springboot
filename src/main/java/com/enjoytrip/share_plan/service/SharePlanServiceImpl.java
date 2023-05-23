@@ -32,13 +32,14 @@ public class SharePlanServiceImpl implements SharePlanService {
 
     @Override
     @Transactional
-    public void registerSharePlan(SharePlanRequestDto sharePlanRequestDto,int memberId) {
+    public String registerSharePlan(SharePlanRequestDto sharePlanRequestDto,int memberId) {
         Plan plan=planRepository.findByPlanId(sharePlanRequestDto.getPlanId()).orElseThrow(()-> new PlanException(PlanExceptionMessage.DATA_NOT_FOUND));
         if(plan.getMemberId()!=memberId){
             throw new PlanException(PlanExceptionMessage.NO_AUTH);
         }
         SharePlan sharePlan=SharePlan.builder().urlKey(UUID.randomUUID().toString()).haltTime(sharePlanRequestDto.getHaltDate()).plan(plan).build();
         sharePlanRepository.save(sharePlan);
+        return sharePlan.getUrlKey();
     }
 
     @Override
