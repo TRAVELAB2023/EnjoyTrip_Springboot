@@ -4,6 +4,7 @@ import com.enjoytrip.member_like.dto.MemberLikeDto;
 import com.enjoytrip.member_like.repository.MemberLikeRepository;
 import com.enjoytrip.model.MemberLike;
 
+import javax.transaction.Transactional;
 import java.sql.SQLException;
 
 public class MemberLikeServiceImpl implements MemberLikeService {
@@ -15,6 +16,7 @@ public class MemberLikeServiceImpl implements MemberLikeService {
     }
 
     @Override
+    @Transactional
     public int registerLike(MemberLikeDto memberLikeDto,int memberId) throws SQLException{
         if(isCanFind(memberId,memberLikeDto.getAttractionId())){
             memberLikeRepository.deleteByMemberIdAndAttractionId(memberId, memberLikeDto.getAttractionId());
