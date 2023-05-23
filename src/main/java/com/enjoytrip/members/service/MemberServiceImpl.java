@@ -8,7 +8,10 @@ import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
 
+import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MemberServiceImpl implements MemberService {
 
@@ -55,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void dropMember(int memberId) throws SQLException {
         Member member = findById(memberId);
         member.dropMember();
@@ -86,11 +90,45 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public SessionDto findByEmail(String email) throws Exception {
+        Member member = memberRepository.findByEmailAndDelYn(email, false);
+        if (member == null) {
+            throw new MemberException(MemberExceptionMessage.WRONG_ID_OR_PASSWORD);
+        }
+        return new SessionDto(member);
+    }
+
+    @Override
     public boolean isWritePassword(LoginDto loginDto) throws Exception {
         if (login(loginDto) != null) {
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    @Transactional
+    public void saveRefreshToken(String email, String refreshToken) throws Exception {
+        Member member = memberRepository.findByEmailAndDelYn(email, false);
+        member.updateToken(refreshToken);
+    }
+
+    @Override
+    public String getRefreshToken(String email) throws Exception {
+        return memberRepository.findByEmailAndDelYn(email, false).getToken();
+    }
+
+    @Override
+    @Transactional
+    public void deleteRefreshToken(String email) throws Exception {
+        Member member = memberRepository.findByEmailAndDelYn(email, false);
+        member.updateToken(null);
+    }
+
+    @Override
+    public SessionDto info(int memberId) {
+        Member member = memberRepository.findByMemberId(memberId);
+        return new SessionDto(member);
     }
 }
