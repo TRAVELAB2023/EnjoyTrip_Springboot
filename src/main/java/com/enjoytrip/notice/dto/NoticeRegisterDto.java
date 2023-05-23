@@ -13,4 +13,13 @@ public class NoticeRegisterDto {
         this.memberId = memberId;
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "NoticeRegisterDto{" +
+                "title='" + title + '\'' +
+                ", memberId=" + memberId +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }

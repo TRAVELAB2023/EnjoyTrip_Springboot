@@ -8,15 +8,14 @@ import com.enjoytrip.members.mapper.MemberIdMapping;
 import com.enjoytrip.members.repository.MemberRepository;
 import com.enjoytrip.model.Member;
 import com.enjoytrip.model.Notice;
-import com.enjoytrip.notice.dto.NoticeDetailDto;
-import com.enjoytrip.notice.dto.NoticeListDto;
-import com.enjoytrip.notice.dto.NoticeRegisterDto;
+import com.enjoytrip.notice.dto.*;
 import com.enjoytrip.notice.repository.NoticeRepository;
 import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,15 +46,17 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public List<NoticeListDto> noticeList(SearchCondition searchCondition, Pageable pageable) throws Exception {
+    public NoticePageDto noticeList(SearchCondition searchCondition, Pageable pageable) throws Exception {
 
         Page<Notice> noticePage= getNoticesBySearchConditionAndPageable(searchCondition, pageable);
+
         List<NoticeListDto> noticeListDtos = new ArrayList<>();
         for (Notice notice : noticePage) {
             noticeListDtos.add(new NoticeListDto(notice));
         }
+        NoticePageDto noticePageDto = new NoticePageDto(noticePage.getTotalPages(),noticeListDtos);
 
-        return noticeListDtos;
+        return noticePageDto;
     }
 
     //Enum으로 변경 가능
@@ -95,5 +96,13 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public void delete(int noticeId) throws Exception {
         noticeRepository.deleteByNoticeId(noticeId);
+    }
+
+    @Override
+    @Transactional
+    public void update(NoticeUpdateDto noticeUpdateDto) {
+        Notice notice = noticeRepository.findByNoticeId(noticeUpdateDto.getId());
+        notice.updateTitle(noticeUpdateDto.getTitle());
+        notice.updateContent(noticeUpdateDto.getContent());
     }
 }
