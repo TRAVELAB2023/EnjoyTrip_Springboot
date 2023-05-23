@@ -15,7 +15,9 @@ import java.sql.SQLException;
 @RestControllerAdvice
 public class ExceptionAdvise {
     @ExceptionHandler(Exception.class)
-    public ResponseEntity ExceptionHandle() {
+    public ResponseEntity ExceptionHandle(Exception e)
+    {
+        e.printStackTrace();
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(SQLException.class)
@@ -70,6 +72,11 @@ public class ExceptionAdvise {
     @ExceptionHandler
     public ResponseEntity<String> SizeLimitExceededExceptionHandle(SizeLimitExceededException sizeLimitExceededException){
         return new ResponseEntity<String>(FileExceptionMessage.TOO_BIG_SIZE.getMsg(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> AccessTokenExpiration(UnAuthorizedException unAuthorizedException) {
+        return new ResponseEntity<>("액세스 토큰 만료", HttpStatus.UNAUTHORIZED);
     }
 
 

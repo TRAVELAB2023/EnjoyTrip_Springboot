@@ -27,6 +27,9 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        if (isPreflightRequest(request)) {
+            return true;
+        }
         final String token = request.getHeader(HEADER_AUTH);
         if (token != null && jwtService.checkToken(token)) {
             logger.info("토큰 사용 가능 : {}", token);
@@ -36,5 +39,23 @@ public class JwtInterceptor implements HandlerInterceptor {
             throw new UnAuthorizedException();
         }
 
+    }
+    private boolean isPreflightRequest(HttpServletRequest request) {
+        return isOptions(request) && hasHeaders(request) && hasMethod(request) && hasOrigin(request);
+    }
+    private boolean isOptions(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.toString());
+    }
+
+    private boolean hasHeaders(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Access-Control-Request-Headers"));
+    }
+
+    private boolean hasMethod(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Access-Control-Request-Method"));
+    }
+
+    private boolean hasOrigin(HttpServletRequest request) {
+        return Objects.nonNull(request.getHeader("Origin"));
     }
 }

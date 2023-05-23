@@ -4,6 +4,7 @@ import com.enjoytrip.auth.service.JwtService;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
+import com.enjoytrip.members.dto.SessionReceiveDto;
 import com.enjoytrip.members.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -44,12 +45,13 @@ public class MemberAuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody SessionDto sessionDto, HttpServletRequest request)
+    public ResponseEntity<?> refreshToken(@RequestBody SessionReceiveDto sessionDto, HttpServletRequest request)
             throws Exception {
+        System.out.println("------------------------------------------------------------");
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refresh-token");
-        logger.debug("token : {}, memberDto : {}", token, sessionDto);
+                logger.debug("token : {}, memberDto : {}", token, sessionDto);
         if (jwtService.checkToken(token)) {
             if (token.equals(memberService.getRefreshToken(sessionDto.getEmail()))) {
                 String accessToken = jwtService.createAccessToken("userid", sessionDto.getMemberId());
@@ -108,12 +110,12 @@ public class MemberAuthController {
 //		logger.debug("userid : {} ", userid);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
+
         if (jwtService.checkToken(request.getHeader("auth-token"))) {
             logger.info("사용 가능한 토큰!!!");
             try {
 //				로그인 사용자 정보.
                 SessionDto memberDto = memberService.info(memberId);
-                System.out.println(memberDto);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
@@ -123,7 +125,7 @@ public class MemberAuthController {
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
         } else {
-            logger.error("사용 불가능 토큰!!!");
+            logger.error("사용 불가능 토큰!!!"+ request.getHeader("auth-token"));
             resultMap.put("message", FAIL);
             status = HttpStatus.UNAUTHORIZED;
         }

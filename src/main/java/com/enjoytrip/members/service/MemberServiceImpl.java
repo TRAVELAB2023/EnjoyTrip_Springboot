@@ -115,7 +115,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Object getRefreshToken(String email) throws Exception {
+    public String getRefreshToken(String email) throws Exception {
         return memberRepository.findByEmailAndDelYn(email, false).getToken();
     }
 
