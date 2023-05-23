@@ -28,7 +28,7 @@ public class AttractionController {
                                                HttpSession session){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         SearchCondition condition=new SearchCondition(sidoCode,gugunCode,contentTypeCode,word,memberLike);
-        List<Attraction> list=attractionService.getAttractionList(condition, sessionDto.getMemberId());
+        List<Attraction> list=attractionService.getAttractionList(condition, 12);
         return new ResponseEntity<List<Attraction>>(list, HttpStatus.OK);
     }
     @GetMapping("/attraction/{contentId}")
