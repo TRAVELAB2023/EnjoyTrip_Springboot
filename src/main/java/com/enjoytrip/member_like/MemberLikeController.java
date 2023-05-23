@@ -20,9 +20,16 @@ public class MemberLikeController {
 
     @PostMapping("")
     public ResponseEntity<Integer> like(HttpSession session, @RequestBody MemberLikeDto memberLikeDto) throws SQLException {
-        System.out.println(memberLikeDto);
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
         Integer result=memberLikeService.registerLike(memberLikeDto,sessionDto.getMemberId());
+
+        return new ResponseEntity(result,HttpStatus.OK);
+    }
+    @GetMapping("/{attractionId}")
+    public ResponseEntity<Boolean> like(HttpSession session, @PathVariable int attractionId) throws SQLException {
+
+        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
+        boolean result=memberLikeService.isCanFind(sessionDto.getMemberId(),attractionId);
 
         return new ResponseEntity(result,HttpStatus.OK);
     }
