@@ -33,6 +33,8 @@ public class Member extends BaseTimeEntity {
     @Column(name = "delYn")
     private boolean delYn;
 
+    private String token;
+
 
 
     @Override
@@ -56,4 +58,7 @@ public class Member extends BaseTimeEntity {
         this.password = newPassword;
     }
 
+    public void updateToken(String token) {
+        this.token = token;
+    }
 }

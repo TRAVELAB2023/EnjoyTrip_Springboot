@@ -13,4 +13,6 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
     int countMembersByEmail(String Email);
     List<MemberIdMapping> findAllIdByNicknameContains(String nickname);
     Member findByMemberId(int memberId);
+
+    Member findByEmailAndDelYn(String email, boolean delYn);
 }
