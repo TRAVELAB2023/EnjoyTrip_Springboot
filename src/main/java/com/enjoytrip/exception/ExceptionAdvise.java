@@ -73,6 +73,10 @@ public class ExceptionAdvise {
     }
 
 
+    @ExceptionHandler
+    public ResponseEntity<String> SharePlanExceptionHandle(SharePlanException sharePlanException){
+        return new ResponseEntity<>(sharePlanException.getMessage(),HttpStatus.BAD_REQUEST);
+    }
 
 
 }

@@ -29,21 +29,21 @@ public class PlanController {
     @DeleteMapping("/{planId}")
     public ResponseEntity<Void> deletePlan(@PathVariable int planId, HttpSession session){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        planService.deletePlan(planId,sessionDto.getMemberId());
+        planService.deletePlan(planId,12);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping("/{planId}")
     public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId,HttpSession session){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        List<Attraction> list=planService.findByPlanId(planId,sessionDto.getMemberId());
+        List<Attraction> list=planService.findByPlanId(planId,12);
         return new ResponseEntity<List<Attraction>>(list,HttpStatus.OK);
     }
 
     @GetMapping("")
     public ResponseEntity<PlanListResponseDto> getPlanList(HttpSession session, @PageableDefault Pageable pageable){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        PlanListResponseDto responseDto=planService.findByMemberId(sessionDto.getMemberId(),pageable);
+        PlanListResponseDto responseDto=planService.findByMemberId(12,pageable);
         return new ResponseEntity<PlanListResponseDto>(responseDto,HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class PlanController {
     @PostMapping("")
     public ResponseEntity<Void> postPlan(HttpSession session,  @RequestBody @Valid PlanRequestDto planRequestDto){
         SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        planService.savePlan(sessionDto.getMemberId(),planRequestDto);
+        planService.savePlan(12,planRequestDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
