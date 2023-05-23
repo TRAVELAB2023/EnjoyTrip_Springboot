@@ -21,6 +21,11 @@ public class ExceptionAdvise {
         e.printStackTrace();
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler
+    public ResponseEntity BoardExceptionHandle(BoardException boardException) {
+        return new ResponseEntity(boardException.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
     @ExceptionHandler(SQLException.class)
     public ResponseEntity SqlExceptionHandle() {
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);

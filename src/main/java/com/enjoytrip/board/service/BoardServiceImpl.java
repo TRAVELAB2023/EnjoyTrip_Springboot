@@ -111,8 +111,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void delete(int boardId) {
+    public void delete(int boardId, int memberId) {
         Board board = boardRepository.findByBoardId(boardId);
+        if (board.getMemberId() != memberId) {
+            throw new BoardException(BoardExceptionMessage.NO_PERMISSION);
+        }
         board.deleteBoard();
     }
 }

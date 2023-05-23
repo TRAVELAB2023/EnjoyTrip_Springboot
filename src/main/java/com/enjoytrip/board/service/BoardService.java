@@ -13,5 +13,5 @@ public interface BoardService {
     BoardDto detail(int boardId);
     BoardPageDto list(SearchCondition searchCondition, Pageable pageable);
     void update(BoardUpdateDto boardUpdateDto);
-    void delete(int boardId);
+    void delete(int boardId, int memberId);
 }
