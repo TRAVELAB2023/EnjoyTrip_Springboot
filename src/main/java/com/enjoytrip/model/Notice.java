@@ -26,5 +26,10 @@ public class Notice extends BaseTimeEntity {
     private int memberId;
     private String content;
 
-
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
