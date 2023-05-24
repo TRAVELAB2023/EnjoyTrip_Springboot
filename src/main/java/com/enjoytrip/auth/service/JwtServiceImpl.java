@@ -114,7 +114,7 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public Map<String, Object> get(String key) {
+    public Map<String, Object> get() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
         String jwt = request.getHeader("auth-token");
@@ -140,6 +140,6 @@ public class JwtServiceImpl implements JwtService{
 
     @Override
     public String getUserId() {
-        return (String) this.get("user").get("userid");
+        return (String) this.get().get("userid");
     }
 }
