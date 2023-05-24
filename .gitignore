@@ -34,3 +34,7 @@ build/
 
 ## AWS S3 key ###
 application-awskey.properties
+
+
+## chatgpt key ###
+application-gpt.properties

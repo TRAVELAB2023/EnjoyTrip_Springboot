@@ -1,5 +1,7 @@
 package com.enjoytrip.util;
 
+import com.enjoytrip.chat.dto.ChatReseponseDto;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -51,9 +53,9 @@ public class ChatBotUtil {
                 .header("Authorization", "Bearer "+chatGPTKey)
                 .body(json);
         ResponseEntity<String> responseEntity= restTemplate.exchange(requestEntity, String.class);
-
-        return responseEntity.getBody();
-
+        Gson gson=new Gson();
+        ChatReseponseDto chatReseponseDto=gson.fromJson(responseEntity.getBody(),ChatReseponseDto.class);
+        return chatReseponseDto.getMessage();
     }
 
 }
