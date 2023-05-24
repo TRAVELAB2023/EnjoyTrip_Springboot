@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 
 @RestControllerAdvice
@@ -44,6 +45,11 @@ public class ExceptionAdvise {
     public ResponseEntity<String> MethodArgumentNotValidExceptionHandle(MethodArgumentNotValidException exception){
         return new ResponseEntity(exception.getBindingResult().getAllErrors().get(0).getDefaultMessage(),HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler
+    public ResponseEntity<String> ConstraintViolationExceptionHandle(ConstraintViolationException exception){
+        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
 
 
     @ExceptionHandler

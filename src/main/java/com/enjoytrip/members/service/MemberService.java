@@ -1,6 +1,7 @@
 package com.enjoytrip.members.service;
 
 import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.ModifyPasswordDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Member;
@@ -13,7 +14,7 @@ public interface MemberService {
     public SessionDto login(LoginDto loginDto) throws Exception;
     public int join(RegisterDto registerDto, String role) throws SQLException;
     public void dropMember(int memberId) throws SQLException;
-    public void modifyMemberPassword(int memberId, String newPassword) throws SQLException;
+    public void modifyMemberPassword(int memberId, ModifyPasswordDto modifyPasswordDto) throws SQLException;
     public boolean isDuplicatedNickname(String nickname) throws SQLException;
     public boolean isDuplicatedEmail(String email) throws SQLException;
 
@@ -26,4 +27,5 @@ public interface MemberService {
     public void deleteRefreshToken(String email) throws Exception;
 
     SessionDto info(int memberId);
+
 }
