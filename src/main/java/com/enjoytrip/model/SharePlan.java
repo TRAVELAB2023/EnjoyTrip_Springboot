@@ -21,7 +21,7 @@ public class SharePlan {
     @Column(name = "halt_time")
     private LocalDate haltTime;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
