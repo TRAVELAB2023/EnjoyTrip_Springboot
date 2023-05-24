@@ -47,9 +47,9 @@ public class NoticeController {
     }
 
     @PutMapping("")
-    public ResponseEntity modify(@RequestBody NoticeRegisterDto noticeRegisterDto) throws Exception {
-        int noticeId= noticeService.register(noticeRegisterDto);
-        return new ResponseEntity(noticeId,HttpStatus.OK);
+    public ResponseEntity modify(@RequestBody NoticeUpdateDto noticeUpdateDto) throws Exception {
+        noticeService.update(noticeUpdateDto);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/{notice-id}")

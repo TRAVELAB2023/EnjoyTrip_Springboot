@@ -103,8 +103,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void update(BoardUpdateDto boardUpdateDto) {
+    public void update(BoardUpdateDto boardUpdateDto, int memberId) {
         Board board = boardRepository.findByBoardId(boardUpdateDto.getId());
+        if (board.getMemberId() != memberId) {
+            throw new BoardException(BoardExceptionMessage.NO_PERMISSION);
+        }
         board.updateContent(boardUpdateDto.getContent());
         board.updateTitle(boardUpdateDto.getTitle());
     }

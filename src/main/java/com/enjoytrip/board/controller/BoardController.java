@@ -50,14 +50,14 @@ public class BoardController {
     @DeleteMapping("/{board-id}")
     public ResponseEntity delete(@PathVariable(name = "board-id") int boardId) throws Exception {
         int memberId = Integer.parseInt(jwtService.getUserId());
-
         boardService.delete(boardId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("")
     public ResponseEntity update(@RequestBody BoardUpdateDto boardUpdateDto) throws Exception {
-        boardService.update(boardUpdateDto);
+        int memberId = Integer.parseInt(jwtService.getUserId());
+        boardService.update(boardUpdateDto, memberId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
