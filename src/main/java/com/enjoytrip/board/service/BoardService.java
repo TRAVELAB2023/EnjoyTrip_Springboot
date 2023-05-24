@@ -12,6 +12,6 @@ public interface BoardService {
     int register(BoardRegisterDto boardRegisterDto) throws IOException;
     BoardDto detail(int boardId);
     BoardPageDto list(SearchCondition searchCondition, Pageable pageable);
-    void update(BoardUpdateDto boardUpdateDto);
-    void delete(int boardId);
+    void update(BoardUpdateDto boardUpdateDto, int memberId);
+    void delete(int boardId, int memberId);
 }

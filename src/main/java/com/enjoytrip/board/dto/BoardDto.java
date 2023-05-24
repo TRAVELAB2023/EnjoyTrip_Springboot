@@ -4,6 +4,7 @@ import com.enjoytrip.model.Board;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -13,7 +14,7 @@ public class BoardDto {
     private int hit;
     private String content;
     private String writerNickname;
-    private LocalDateTime registerTime;
+    private String registerTime;
     private int writerId;
     private List<CommentBoardDto> commentBoardList;
 
@@ -23,7 +24,7 @@ public class BoardDto {
         this.hit = hit;
         this.content = content;
         this.writerNickname = writerNickname;
-        this.registerTime = registerTime;
+        this.registerTime = registerTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.writerId = writerId;
         this.commentBoardList = commentBoardList;
     }
@@ -36,7 +37,7 @@ public class BoardDto {
         this.writerId = board.getMemberId();
         this.commentBoardList = commentBoards;
         this.writerNickname = memberNickname;
-        this.registerTime = board.getRegisterTime();
+        this.registerTime = board.getRegisterTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     @Override

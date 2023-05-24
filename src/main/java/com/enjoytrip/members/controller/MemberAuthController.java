@@ -53,18 +53,14 @@ public class MemberAuthController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refresh-token");
-                logger.debug("token : {}, memberDto : {}", token, sessionDto);
         if (jwtService.checkToken(token)) {
             if (token.equals(memberService.getRefreshToken(sessionDto.getEmail()))) {
                 String accessToken = jwtService.createAccessToken("userid", sessionDto.getMemberId());
-                logger.debug("token : {}", accessToken);
-                logger.debug("정상적으로 액세스토큰 재발급!!!");
                 resultMap.put("auth-token", accessToken);
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
         } else {
-            logger.debug("리프레쉬토큰도 사용불!!!!!!!");
             status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -79,8 +75,6 @@ public class MemberAuthController {
         String accessToken = jwtService.createAccessToken("userid", loginUser.getMemberId());// key, data
         String refreshToken = jwtService.createRefreshToken("userid", loginUser.getMemberId());// key, data
         memberService.saveRefreshToken(loginDto.getEmail(), refreshToken);
-        logger.debug("로그인 accessToken 정보 : {}", accessToken);
-        logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
         resultMap.put("auth-token", accessToken);
         resultMap.put("refresh-token", refreshToken);
         resultMap.put("message", SUCCESS);
@@ -121,25 +115,20 @@ public class MemberAuthController {
     @GetMapping("/info/{memberId}")
     public ResponseEntity<Map<String, Object>> getInfo(@PathVariable(name = "memberId") int memberId,
                                                        HttpServletRequest request) {
-//		logger.debug("userid : {} ", userid);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
         if (jwtService.checkToken(request.getHeader("auth-token"))) {
-            logger.info("사용 가능한 토큰!!!");
             try {
-//				로그인 사용자 정보.
                 SessionDto memberDto = memberService.info(memberId);
                 resultMap.put("userInfo", memberDto);
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             } catch (Exception e) {
-                logger.error("정보조회 실패 : {}", e);
                 resultMap.put("message", e.getMessage());
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }
         } else {
-            logger.error("사용 불가능 토큰!!!"+ request.getHeader("auth-token"));
             resultMap.put("message", FAIL);
             status = HttpStatus.UNAUTHORIZED;
         }

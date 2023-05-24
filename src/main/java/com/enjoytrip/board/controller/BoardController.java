@@ -1,15 +1,13 @@
 package com.enjoytrip.board.controller;
 
+import com.enjoytrip.auth.service.JwtService;
 import com.enjoytrip.board.dto.*;
 import com.enjoytrip.board.service.BoardService;
 import com.enjoytrip.util.SearchCondition;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -17,9 +15,11 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final JwtService jwtService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, JwtService jwtService) {
         this.boardService = boardService;
+        this.jwtService = jwtService;
     }
 
 
@@ -49,13 +49,15 @@ public class BoardController {
 
     @DeleteMapping("/{board-id}")
     public ResponseEntity delete(@PathVariable(name = "board-id") int boardId) throws Exception {
-        boardService.delete(boardId);
+        int memberId = Integer.parseInt(jwtService.getUserId());
+        boardService.delete(boardId, memberId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("")
     public ResponseEntity update(@RequestBody BoardUpdateDto boardUpdateDto) throws Exception {
-        boardService.update(boardUpdateDto);
+        int memberId = Integer.parseInt(jwtService.getUserId());
+        boardService.update(boardUpdateDto, memberId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
