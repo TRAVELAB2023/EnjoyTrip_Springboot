@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class BoardListDto {
@@ -17,9 +17,7 @@ public class BoardListDto {
     String writerNickname;
     int writerId;
 
-    @JsonDeserialize
-    @JsonSerialize
-    LocalDateTime registerTime;
+    String registerTime;
 
     public BoardListDto(Board board, String writerNickname) {
         this.boardId = board.getBoardId();
@@ -27,6 +25,7 @@ public class BoardListDto {
         this.hit = boardId;
         this.writerId = board.getMemberId();
         this.writerNickname = writerNickname;
-        this.registerTime = board.getRegisterTime();
+        this.registerTime = board.getRegisterTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
     }
 }
