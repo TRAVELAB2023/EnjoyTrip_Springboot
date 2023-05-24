@@ -3,6 +3,7 @@ package com.enjoytrip.members.service;
 import com.enjoytrip.exception.custom_exception.MemberException;
 import com.enjoytrip.exception.message.MemberExceptionMessage;
 import com.enjoytrip.members.dto.LoginDto;
+import com.enjoytrip.members.dto.ModifyPasswordDto;
 import com.enjoytrip.members.dto.RegisterDto;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.repository.MemberRepository;
@@ -65,9 +66,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void modifyMemberPassword(int memberId, String newPassword) throws SQLException {
+    public void modifyMemberPassword(int memberId, ModifyPasswordDto modifyPasswordDto) throws SQLException {
         Member member = findById(memberId);
-        member.modifyPassword(newPassword);
+        if(member.getPassword()==modifyPasswordDto.getCurPassword()){
+            member.modifyPassword(modifyPasswordDto.getNewPassword());
+        }else{
+            throw new MemberException(MemberExceptionMessage.NOT_EQUALS_PASSWORD);
+        }
+
     }
 
     @Override
@@ -131,4 +137,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByMemberId(memberId);
         return new SessionDto(member);
     }
+
+
 }

@@ -61,4 +61,7 @@ public class Member extends BaseTimeEntity {
     public void updateToken(String token) {
         this.token = token;
     }
+
+
+
 }

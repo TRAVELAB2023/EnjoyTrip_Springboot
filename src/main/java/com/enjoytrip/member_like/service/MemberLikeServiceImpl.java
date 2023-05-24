@@ -15,6 +15,7 @@ public class MemberLikeServiceImpl implements MemberLikeService {
         this.memberLikeRepository = memberLikeRepository;
     }
 
+
     @Override
     @Transactional
     public int registerLike(MemberLikeDto memberLikeDto,int memberId) throws SQLException{
