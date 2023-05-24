@@ -38,3 +38,6 @@ application-awskey.properties
 
 ## chatgpt key ###
 application-gpt.properties
+
+### email ###
+application-email.properties
