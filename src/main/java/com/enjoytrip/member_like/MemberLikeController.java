@@ -1,5 +1,6 @@
 package com.enjoytrip.member_like;
 
+import com.enjoytrip.common.LoginMember;
 import com.enjoytrip.member_like.dto.MemberLikeDto;
 import com.enjoytrip.member_like.service.MemberLikeService;
 import com.enjoytrip.members.dto.SessionDto;
@@ -19,17 +20,15 @@ public class MemberLikeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Integer> like(HttpSession session, @RequestBody MemberLikeDto memberLikeDto) throws SQLException {
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        Integer result=memberLikeService.registerLike(memberLikeDto,sessionDto.getMemberId());
+    public ResponseEntity<Integer> like(@LoginMember int memberId, @RequestBody MemberLikeDto memberLikeDto) throws SQLException {
+        Integer result=memberLikeService.registerLike(memberLikeDto,memberId);
 
         return new ResponseEntity(result,HttpStatus.OK);
     }
     @GetMapping("/{attractionId}")
-    public ResponseEntity<Boolean> like(HttpSession session, @PathVariable int attractionId) throws SQLException {
+    public ResponseEntity<Boolean> like(@LoginMember int memberId, @PathVariable int attractionId) throws SQLException {
 
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        boolean result=memberLikeService.isCanFind(sessionDto.getMemberId(),attractionId);
+        boolean result=memberLikeService.isCanFind(memberId,attractionId);
 
         return new ResponseEntity(result,HttpStatus.OK);
     }
