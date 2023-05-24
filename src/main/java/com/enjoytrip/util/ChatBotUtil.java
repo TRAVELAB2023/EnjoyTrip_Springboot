@@ -1,5 +1,6 @@
 package com.enjoytrip.util;
 
+import com.enjoytrip.chat.dto.ChatMessage;
 import com.enjoytrip.chat.dto.ChatReseponseDto;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ public class ChatBotUtil {
         this.restTemplate = restTemplate;
     }
 
-    public String chat(String msg) throws IOException {
+    public String chat(ChatMessage message) throws IOException {
 
         // 보낼 데이터 세팅
         String json="{\n" +
@@ -38,11 +39,11 @@ public class ChatBotUtil {
                 "    },\n" +
                 "    {\n" +
                 "      \"role\": \"system\",\n" +
-                "      \"content\": \"너는 질문이 만약 한국 관광지와 연관이 있다면 글의 첫머리를 '제가 추천하는 여행지는 '으로 시작하고 답변을 관광지 관련 설명 없이 관광지 명칭만 나열하고  '입니다'로 대답해줘\"\n" +
+                "      \"content\": \"너는 질문이 만약 한국 관광지와 연관이 있다면 글의 첫머리를 '제가 추천하는 "+message.getSidoName()+message.getGugunName()  +" 주요 "+message.getContentTypeName()+"은(는) '으로 시작하고 답변을 관광지 관련 설명 없이 관광지 명칭만 나열하고  '입니다'로 대답해줘\"\n" +
                 "    },\n" +
                 "    {\n" +
                 "      \"role\": \"user\",\n" +
-                "      \"content\": \""+msg+"\"\n" +
+                "      \"content\": \""+message.getMessage()+"\"\n" +
                 "    }\n" +
                 "  ]\n" +
                 "}";
