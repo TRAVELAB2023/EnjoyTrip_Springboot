@@ -1,6 +1,7 @@
 package com.enjoytrip.attraction.controller;
 
 import com.enjoytrip.attraction.service.AttractionService;
+import com.enjoytrip.common.LoginMember;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.model.SearchCondition;
@@ -25,10 +26,10 @@ public class AttractionController {
                                                @RequestParam(required = false,defaultValue = "0") int contentTypeCode,
                                                @RequestParam(required = false,defaultValue = "") String word,
                                                @RequestParam(required = false,defaultValue = "false") boolean memberLike,
-                                               HttpSession session){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
+                                               @LoginMember int memberId){
+        System.out.println(memberId);
         SearchCondition condition=new SearchCondition(sidoCode,gugunCode,contentTypeCode,word,memberLike);
-        List<Attraction> list=attractionService.getAttractionList(condition, sessionDto.getMemberId());
+        List<Attraction> list=attractionService.getAttractionList(condition, memberId);
         return new ResponseEntity<List<Attraction>>(list, HttpStatus.OK);
     }
     @GetMapping("/attraction/{contentId}")
