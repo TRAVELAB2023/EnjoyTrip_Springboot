@@ -2,8 +2,10 @@ package com.enjoytrip.members.controller;
 
 
 import com.enjoytrip.auth.service.JwtService;
+import com.enjoytrip.common.LoginMember;
 import com.enjoytrip.members.dto.LoginDto;
 import com.enjoytrip.members.dto.LogoutDto;
+import com.enjoytrip.members.dto.ModifyPasswordDto;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.members.service.MemberService;
 import io.swagger.annotations.ApiOperation;
@@ -59,12 +61,12 @@ public class MemberController {
 
     }
 
-    @PatchMapping("/modify-password")
-    public ResponseEntity modifyPassword(@RequestParam("newPassword") String password, HttpSession session) throws SQLException {
-        SessionDto sessionDto = (SessionDto) session.getAttribute("userinfo");
-        memberService.modifyMemberPassword(sessionDto.getMemberId(), password);
+    @PatchMapping("/password")
+    public ResponseEntity modifyPassword(@RequestBody ModifyPasswordDto modifyPasswordDto, @LoginMember int memberId) throws SQLException {
+        memberService.modifyMemberPassword(memberId, modifyPasswordDto);
         return new ResponseEntity(HttpStatus.OK);
     }
+
 
 
 
