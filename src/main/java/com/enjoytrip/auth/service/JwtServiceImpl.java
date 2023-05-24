@@ -28,7 +28,7 @@ public class JwtServiceImpl implements JwtService{
 
     @Override
     public <T> String createAccessToken(String key, T data) {
-        return create(key, data, "auth-token", 1000 * 20 * ACCESS_TOKEN_EXPIRE_MINUTES);
+        return create(key, data, "auth-token", 1000 * 60 * 20 * ACCESS_TOKEN_EXPIRE_MINUTES);
 //		return create(key, data, "access-token", 1000 * 10 * ACCESS_TOKEN_EXPIRE_MINUTES);
     }
 
@@ -114,7 +114,7 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public Map<String, Object> get(String key) {
+    public Map<String, Object> get() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
         String jwt = request.getHeader("auth-token");
@@ -140,6 +140,6 @@ public class JwtServiceImpl implements JwtService{
 
     @Override
     public String getUserId() {
-        return (String) this.get("user").get("userid");
+        return (String) this.get().get("userid");
     }
 }

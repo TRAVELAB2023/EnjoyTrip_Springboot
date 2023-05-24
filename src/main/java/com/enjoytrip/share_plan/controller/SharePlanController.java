@@ -1,6 +1,7 @@
 package com.enjoytrip.share_plan.controller;
 
 
+import com.enjoytrip.common.LoginMember;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.share_plan.dto.SharePlanRequestDto;
@@ -24,9 +25,8 @@ public class SharePlanController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> registerSharePlan(HttpSession session, @RequestBody @Valid SharePlanRequestDto planShareRequestDto){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        String key=planShareService.registerSharePlan(planShareRequestDto,sessionDto.getMemberId());
+    public ResponseEntity<String> registerSharePlan(@LoginMember int memberId, @RequestBody @Valid SharePlanRequestDto planShareRequestDto){
+        String key=planShareService.registerSharePlan(planShareRequestDto,memberId);
         return new ResponseEntity<String>(key,HttpStatus.OK);
     }
     @GetMapping("/{key}")
