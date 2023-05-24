@@ -1,5 +1,6 @@
 package com.enjoytrip.plan.controller;
 
+import com.enjoytrip.common.LoginMember;
 import com.enjoytrip.members.dto.SessionDto;
 import com.enjoytrip.model.Attraction;
 import com.enjoytrip.plan.dto.PlanDto;
@@ -27,31 +28,27 @@ public class PlanController {
     }
 
     @DeleteMapping("/{planId}")
-    public ResponseEntity<Void> deletePlan(@PathVariable int planId, HttpSession session){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        planService.deletePlan(planId,sessionDto.getMemberId());
+    public ResponseEntity<Void> deletePlan(@PathVariable int planId, @LoginMember int memberId){
+        planService.deletePlan(planId,memberId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping("/{planId}")
-    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId,HttpSession session){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        List<Attraction> list=planService.findByPlanId(planId,sessionDto.getMemberId());
+    public ResponseEntity<List<Attraction>> getPlan(@PathVariable int planId,@LoginMember int memberId){
+        List<Attraction> list=planService.findByPlanId(planId,memberId);
         return new ResponseEntity<List<Attraction>>(list,HttpStatus.OK);
     }
 
     @GetMapping("")
-    public ResponseEntity<PlanListResponseDto> getPlanList(HttpSession session, @PageableDefault Pageable pageable){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        PlanListResponseDto responseDto=planService.findByMemberId(sessionDto.getMemberId(),pageable);
+    public ResponseEntity<PlanListResponseDto> getPlanList(@LoginMember int memberId, @PageableDefault Pageable pageable){
+        PlanListResponseDto responseDto=planService.findByMemberId(memberId,pageable);
         return new ResponseEntity<PlanListResponseDto>(responseDto,HttpStatus.OK);
     }
 
 
     @PostMapping("")
-    public ResponseEntity<Void> postPlan(HttpSession session,  @RequestBody @Valid PlanRequestDto planRequestDto){
-        SessionDto sessionDto= (SessionDto) session.getAttribute("userInfo");
-        planService.savePlan(sessionDto.getMemberId(),planRequestDto);
+    public ResponseEntity<Void> postPlan(@LoginMember int memberId,  @RequestBody @Valid PlanRequestDto planRequestDto){
+        planService.savePlan(memberId,planRequestDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
