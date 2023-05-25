@@ -56,8 +56,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
+                        "/email/**",
                         "/chat",
-                        "/auth/**"
+                        "/auth/*"
                         , "/swagger-ui/**"
                         , "/swagger-resources/**"
                         , "/v2/api-docs"
