@@ -48,7 +48,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8080")
-                .allowedMethods(HttpMethod.OPTIONS.name(), HttpMethod.HEAD.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.DELETE.name(), HttpMethod.PUT.name());
+                .allowedMethods(HttpMethod.PATCH.name(), HttpMethod.OPTIONS.name(), HttpMethod.HEAD.name(), HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.DELETE.name(), HttpMethod.PUT.name());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/share/plan/**",
+                        "/share/plan/*",
                         "/chat",
                         "/auth/**"
                         , "/swagger-ui/**"

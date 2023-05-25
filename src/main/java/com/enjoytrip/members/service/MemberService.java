@@ -20,7 +20,7 @@ public interface MemberService {
 
     public SessionDto findByEmail(String email) throws Exception;
 
-    public boolean isWritePassword(LoginDto loginDto) throws Exception;
+    public boolean isRightPassword(String password, int memberId) throws Exception;
 
     public void saveRefreshToken(String email, String refreshToken) throws Exception;
     public String getRefreshToken(String email) throws Exception;

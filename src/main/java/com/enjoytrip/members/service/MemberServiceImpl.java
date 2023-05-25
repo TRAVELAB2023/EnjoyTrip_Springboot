@@ -66,9 +66,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void modifyMemberPassword(int memberId, ModifyPasswordDto modifyPasswordDto) throws SQLException {
         Member member = findById(memberId);
-        if(member.getPassword()==modifyPasswordDto.getCurPassword()){
+        if(member.getPassword().equals(modifyPasswordDto.getCurPassword())){
             member.modifyPassword(modifyPasswordDto.getNewPassword());
         }else{
             throw new MemberException(MemberExceptionMessage.NOT_EQUALS_PASSWORD);
@@ -105,12 +106,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean isWritePassword(LoginDto loginDto) throws Exception {
-        if (login(loginDto) != null) {
-            return true;
+    public boolean isRightPassword(String password, int memberId) throws Exception {
+        Member member = memberRepository.findByMemberId(memberId);
+        if (member == null || !member.getPassword().equals(password)) {
+            throw new MemberException(MemberExceptionMessage.WRONG_PASSWORD);
         }
 
-        return false;
+        return true;
     }
 
     @Override

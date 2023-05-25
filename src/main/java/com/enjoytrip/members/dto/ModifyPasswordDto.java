@@ -15,4 +15,12 @@ public class ModifyPasswordDto {
     private String curPassword;
     @NotBlank(message="값이 입력되어 있지 않습니다.")
     private String newPassword;
+
+    @Override
+    public String toString() {
+        return "ModifyPasswordDto{" +
+                "curPassword='" + curPassword + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                '}';
+    }
 }

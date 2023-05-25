@@ -3,21 +3,16 @@ package com.enjoytrip.members.controller;
 
 import com.enjoytrip.auth.service.JwtService;
 import com.enjoytrip.common.LoginMember;
-import com.enjoytrip.members.dto.LoginDto;
-import com.enjoytrip.members.dto.LogoutDto;
 import com.enjoytrip.members.dto.ModifyPasswordDto;
-import com.enjoytrip.members.dto.SessionDto;
+import com.enjoytrip.members.dto.PasswordDto;
 import com.enjoytrip.members.service.MemberService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,21 +48,16 @@ public class MemberController {
     }
 
     @PostMapping("/password-check")
-    public ResponseEntity checkPassword(@RequestBody LoginDto loginDto) throws Exception {
-        if (memberService.isWritePassword(loginDto)) {
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-
-    }
-
-    @PatchMapping("/password")
-    public ResponseEntity modifyPassword(@RequestBody ModifyPasswordDto modifyPasswordDto, @LoginMember int memberId) throws SQLException {
-        memberService.modifyMemberPassword(memberId, modifyPasswordDto);
+    public ResponseEntity checkPassword(@RequestBody PasswordDto passwordDto, @LoginMember int memberId) throws Exception {
+        memberService.isRightPassword(passwordDto.getPassword(), memberId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-
+    @PutMapping("/password")
+    public ResponseEntity modifyPassword(@Valid @RequestBody ModifyPasswordDto modifyPasswordDto, @LoginMember int memberId) throws SQLException {
+        memberService.modifyMemberPassword(memberId, modifyPasswordDto);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
 }
