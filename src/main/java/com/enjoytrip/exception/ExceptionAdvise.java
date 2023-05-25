@@ -65,6 +65,10 @@ public class ExceptionAdvise {
     public ResponseEntity<String> AttractionExceptionHandle(AttractionException attractionException){
         return new ResponseEntity<>(attractionException.getMessage(),HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler
+    public ResponseEntity<String> EmailExceptionHandle(EmailException emailException){
+        return new ResponseEntity<>(emailException.getMessage(),HttpStatus.BAD_REQUEST);
+    }
     /**
      * maxFileSize 초과시 발생
      * @param fileSizeLimitExceededException
