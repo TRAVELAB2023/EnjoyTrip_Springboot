@@ -22,7 +22,7 @@ public class TempPassword extends BaseTimeEntity {
     private String tempPw;
 
     @ManyToOne
-    @JoinColumn(name="plan_id")
+    @JoinColumn(name="member_id")
     private Member member;
 
     @Builder
