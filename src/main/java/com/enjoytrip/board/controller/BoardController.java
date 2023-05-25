@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 
 @RestController
 @RequestMapping("/board")
@@ -24,6 +26,7 @@ public class BoardController {
 
 
     @GetMapping("/{board-id}")
+    @Transactional
     public ResponseEntity<BoardDto> detail(@PathVariable(name = "board-id") int boardId) throws Exception {
         BoardDto boardDto = boardService.detail(boardId);
         return new ResponseEntity<>(boardDto, HttpStatus.OK);

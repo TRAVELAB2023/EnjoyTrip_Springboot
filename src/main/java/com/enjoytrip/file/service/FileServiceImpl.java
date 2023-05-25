@@ -21,7 +21,7 @@ public class FileServiceImpl implements FileService{
     public String uploadFile(MultipartFile file) throws IOException {
         String fileName= UUID.randomUUID().toString();
         LocalDate localDate= LocalDate.now();
-        imageUploadUtil.uploadFile(file,localDate.toString(),fileName);
-        return null;
+
+        return imageUploadUtil.uploadFile(file,localDate.toString(),fileName);
     }
 }

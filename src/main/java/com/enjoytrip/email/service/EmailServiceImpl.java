@@ -45,7 +45,10 @@ public class EmailServiceImpl implements EmailService{
     }
 
     @Override
+    @Transactional
     public void checkEmail(String key) {
         TempPassword tempPassword=tempPasswordRepository.findByTempKey(key).orElseThrow(()->new EmailException(EmailExceptionMessage.DATA_NOT_FOUND));
+        tempPassword.getMember().modifyPassword(tempPassword.getTempPw());
+
     }
 }

@@ -3,12 +3,14 @@ package com.enjoytrip.model;
 import com.enjoytrip.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @Table(name = "temp_pw")
+@NoArgsConstructor
 public class TempPassword extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +33,6 @@ public class TempPassword extends BaseTimeEntity {
         this.tempPw=tempPw;
         this.member=member;
     }
+
+
 }

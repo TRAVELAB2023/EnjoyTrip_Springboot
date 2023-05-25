@@ -22,7 +22,7 @@ public class BoardListDto {
     public BoardListDto(Board board, String writerNickname) {
         this.boardId = board.getBoardId();
         this.title = board.getTitle();
-        this.hit = boardId;
+        this.hit = board.getHit();
         this.writerId = board.getMemberId();
         this.writerNickname = writerNickname;
         this.registerTime = board.getRegisterTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
