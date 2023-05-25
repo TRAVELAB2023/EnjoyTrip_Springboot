@@ -5,6 +5,7 @@ import com.enjoytrip.model.Member;
 import com.enjoytrip.model.TempPassword;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -24,7 +25,8 @@ public class EmailUtil {
     /**
      * 비밀번호 찾기 기본 url
      */
-    private final String pw_domain="http://localhost:8080/check/";
+    @Value("${mail.domain}")
+    private String pw_domain;
     public EmailUtil(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
