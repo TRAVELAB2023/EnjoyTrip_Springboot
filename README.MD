@@ -32,7 +32,6 @@
 2. 글 조회 GET
 3. 글 수정 PATCH
 4. 글 삭제 PATCH
-5. 글 신고 POST
 6. 글 댓글 POST
 7. 댓글에 대한 답글 POST
 
